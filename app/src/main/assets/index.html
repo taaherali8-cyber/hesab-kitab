@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>حساب و کتاب</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #00897B;
+    --primary-dark: #00695C;
+    --primary-light: #E0F2F1;
+    --green: #2E7D32;
+    --red: #C62828;
+    --bg: #F5F5F5;
+    --surface: #FFFFFF;
+    --text: #212121;
+    --text2: #757575;
+    --border: #E0E0E0;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  body {
+    font-family: Tahoma, 'Noto Naskh Arabic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 90px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    padding: 20px 16px 24px;
+    border-radius: 0 0 24px 24px;
+    box-shadow: var(--shadow);
+  }
+  .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+  .stats { display: flex; gap: 10px; }
+  .stat {
+    flex: 1; background: rgba(255,255,255,0.15);
+    border-radius: 12px; padding: 10px 12px;
+    backdrop-filter: blur(6px);
+  }
+  .stat .label { font-size: 11px; opacity: 0.9; margin-bottom: 4px; }
+  .stat .value { font-size: 17px; font-weight: 700; }
+  .stat.debit .value { color: #B9F6CA; }
+  .stat.credit .value { color: #FFCDD2; }
+  .balance {
+    margin-top: 10px; padding: 10px 14px;
+    background: rgba(255,255,255,0.18); border-radius: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .balance .label { font-size: 13px; }
+  .balance .value { font-size: 18px; font-weight: 700; }
+
+  .toolbar {
+    display: flex; justify-content: center; gap: 8px;
+    padding: 14px 12px 6px;
+  }
+  .toolbar button {
+    flex: 1; padding: 10px 8px; border: none;
+    background: var(--surface); color: var(--primary);
+    border-radius: 12px; font-family: inherit; font-size: 13px;
+    font-weight: 600; box-shadow: var(--shadow); cursor: pointer;
+  }
+
+  .list { padding: 8px 12px; display: flex; flex-direction: column; gap: 8px; }
+  .empty {
+    text-align: center; padding: 60px 20px; color: var(--text2);
+    font-size: 14px;
+  }
+  .empty-icon { font-size: 64px; margin-bottom: 12px; opacity: 0.3; }
+
+  .card {
+    background: var(--surface); border-radius: 14px;
+    padding: 14px; box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 12px;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .avatar.debit { background: #E8F5E9; color: var(--green); }
+  .avatar.credit { background: #FFEBEE; color: var(--red); }
+  .card-body { flex: 1; min-width: 0; }
+  .card-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .card-sub { font-size: 12px; color: var(--text2); }
+  .card-amount { font-size: 15px; font-weight: 700; flex-shrink: 0; }
+  .card-amount.debit { color: var(--green); }
+  .card-amount.credit { color: var(--red); }
+
+  .fab {
+    position: fixed; bottom: 20px; left: 20px;
+    background: var(--primary); color: #fff; border: none;
+    width: 56px; height: 56px; border-radius: 18px;
+    font-size: 28px; box-shadow: 0 6px 16px rgba(0,137,123,0.4);
+    cursor: pointer; z-index: 50;
+  }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    display: none; align-items: flex-end; justify-content: center;
+    z-index: 100; animation: fadeIn 0.15s;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 22px 22px 0 0;
+    width: 100%; max-width: 500px; padding: 20px 16px;
+    max-height: 90vh; overflow-y: auto;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+  .modal h2 { font-size: 17px; margin-bottom: 16px; text-align: center; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-size: 12px; color: var(--text2);
+    margin-bottom: 6px; font-weight: 600;
+  }
+  .field input, .field select {
+    width: 100%; padding: 12px; font-family: inherit;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    font-size: 14px; background: #FAFAFA; color: var(--text);
+    outline: none; transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--primary); background: #fff; }
+  .type-toggle {
+    display: flex; gap: 8px; margin-bottom: 14px;
+  }
+  .type-toggle button {
+    flex: 1; padding: 10px; border: 1.5px solid var(--border);
+    background: #fff; border-radius: 10px; font-family: inherit;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    color: var(--text2);
+  }
+  .type-toggle button.active[data-type="debit"] {
+    background: #E8F5E9; border-color: var(--green); color: var(--green);
+  }
+  .type-toggle button.active[data-type="credit"] {
+    background: #FFEBEE; border-color: var(--red); color: var(--red);
+  }
+  .date-row { display: flex; gap: 6px; }
+  .date-row select { flex: 1; }
+  .modal-actions {
+    display: flex; gap: 10px; margin-top: 18px;
+  }
+  .modal-actions button {
+    flex: 1; padding: 13px; border: none; border-radius: 12px;
+    font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .btn-cancel { background: #EEEEEE; color: var(--text); }
+  .btn-save { background: var(--primary); color: #fff; }
+
+  .lock-screen {
+    position: fixed; inset: 0; background: linear-gradient(160deg, var(--primary), var(--primary-dark));
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 1000; color: #fff;
+  }
+  .lock-screen.hidden { display: none; }
+  .lock-screen .icon { font-size: 90px; margin-bottom: 20px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+  .lock-screen p { font-size: 15px; opacity: 0.9; margin-bottom: 30px; }
+  .lock-screen button {
+    padding: 12px 40px; border: none; border-radius: 12px;
+    background: rgba(255,255,255,0.2); color: #fff; font-family: inherit;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.85); color: #fff; padding: 10px 18px;
+    border-radius: 20px; font-size: 13px; z-index: 2000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- صفحهٔ قفل -->
+<div class="lock-screen" id="lockScreen">
+  <div class="icon">🔒</div>
+  <p id="lockMsg">برای ورود، اثر انگشت را لمس کنید</p>
+  <button onclick="askAuth()">احراز هویت</button>
+</div>
+
+<!-- هدر -->
+<div class="header">
+  <h1>حساب و کتاب</h1>
+  <div class="stats">
+    <div class="stat debit">
+      <div class="label">طلب من</div>
+      <div class="value" id="totalDebit">0</div>
+    </div>
+    <div class="stat credit">
+      <div class="label">بدهی من</div>
+      <div class="value" id="totalCredit">0</div>
+    </div>
+  </div>
+  <div class="balance">
+    <span class="label" id="balanceLabel">مانده</span>
+    <span class="value" id="balanceValue">0</span>
+  </div>
+</div>
+
+<!-- نوار ابزار -->
+<div class="toolbar">
+  <button onclick="backup()">💾 پشتیبان‌گیری</button>
+  <button onclick="restore()">📂 بازیابی</button>
+</div>
+
+<!-- لیست -->
+<div class="list" id="list"></div>
+
+<!-- دکمهٔ افزودن -->
+<button class="fab" onclick="openAddDialog()">＋</button>
+
+<!-- مودال افزودن -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2>ثبت جدید</h2>
+
+    <div class="type-toggle">
+      <button data-type="debit" class="active" onclick="setType('debit', this)">بدهکار (طلب من)</button>
+      <button data-type="credit" onclick="setType('credit', this)">بستانکار (بدهی من)</button>
+    </div>
+
+    <div class="field">
+      <label>نام شخص</label>
+      <input type="text" id="inputName" placeholder="مثلاً علی" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label>مبلغ (تومان)</label>
+      <input type="number" id="inputAmount" placeholder="50000" inputmode="numeric">
+    </div>
+
+    <div class="field">
+      <label>تاریخ شمسی</label>
+      <div class="date-row">
+        <select id="selYear"></select>
+        <select id="selMonth"></select>
+        <select id="selDay"></select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>توضیح (اختیاری)</label>
+      <input type="text" id="inputNote" placeholder="توضیح کوتاه" autocomplete="off">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddDialog()">انصراف</button>
+      <button class="btn-save" onclick="saveEntry()">ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<!-- فایل ورودی برای بازیابی -->
+<input type="file" id="restoreInput" accept=".json" style="display:none">
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ داده‌ها ============
+const KEY = 'hesab_ketab_entries_v1';
+let entries = JSON.parse(localStorage.getItem(KEY) || '[]');
+let currentType = 'debit';
+let authCallbackId = 0;
+let authCallbacks = {};
+
+// ============ تاریخ شمسی ============
+function toJalali(gy, gm, gd) {
+  const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+  let jy = (gy <= 1600) ? 0 : 979;
+  gy -= (gy <= 1600) ? 621 : 1600;
+  const gy2 = (gm > 2) ? (gy + 1) : gy;
+  let days = (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
+  jy += 33 * Math.floor(days / 12053);
+  days %= 12053;
+  jy += 4 * Math.floor(days / 1461);
+  days %= 1461;
+  if (days > 365) {
+    jy += Math.floor((days - 1) / 365);
+    days = (days - 1) % 365;
+  }
+  const jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+  const jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+  return { jy, jm, jd };
+}
+
+function todayJalali() {
+  const now = new Date();
+  return toJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+}
+
+function monthLength(jy, jm) {
+  if (jm <= 6) return 31;
+  if (jm <= 11) return 30;
+  const mod = jy % 33;
+  const leap = [1,5,9,13,17,22,26,30].includes(mod);
+  return leap ? 30 : 29;
+}
+
+const monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+
+function fillDateSelectors() {
+  const t = todayJalali();
+  const selY = document.getElementById('selYear');
+  const selM = document.getElementById('selMonth');
+  const selD = document.getElementById('selDay');
+
+  selY.innerHTML = '';
+  for (let y = 1400; y <= 1420; y++) {
+    selY.innerHTML += `<option value="${y}" ${y===t.jy?'selected':''}>${y}</option>`;
+  }
+  selM.innerHTML = '';
+  for (let m = 1; m <= 12; m++) {
+    selM.innerHTML += `<option value="${m}" ${m===t.jm?'selected':''}>${monthNames[m-1]}</option>`;
+  }
+  updateDayOptions(t.jd);
+
+  selY.onchange = () => updateDayOptions();
+  selM.onchange = () => updateDayOptions();
+}
+
+function updateDayOptions(select = null) {
+  const y = +document.getElementById('selYear').value;
+  const m = +document.getElementById('selMonth').value;
+  const len = monthLength(y, m);
+  const selD = document.getElementById('selDay');
+  const prev = select || +selD.value || 1;
+  selD.innerHTML = '';
+  for (let d = 1; d <= len; d++) {
+    selD.innerHTML += `<option value="${d}" ${d===prev?'selected':''}>${d}</option>`;
+  }
+}
+
+// ============ رندر ============
+function render() {
+  const list = document.getElementById('list');
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>هنوز چیزی ثبت نکرده‌اید</div>';
+  } else {
+    list.innerHTML = entries.slice().reverse().map(e => `
+      <div class="card">
+        <div class="avatar ${e.type}">${e.type === 'debit' ? '↓' : '↑'}</div>
+        <div class="card-body">
+          <div class="card-name">${escapeHtml(e.name)}</div>
+          <div class="card-sub">${e.date}${e.note ? ' • ' + escapeHtml(e.note) : ''}</div>
+        </div>
+        <div class="card-amount ${e.type}">${e.amount.toLocaleString('en-US')}</div>
+      </div>
+    `).join('');
+  }
+  updateTotals();
+}
+
+function updateTotals() {
+  const debit = entries.filter(e => e.type === 'debit').reduce((s, e) => s + e.amount, 0);
+  const credit = entries.filter(e => e.type === 'credit').reduce((s, e) => s + e.amount, 0);
+  const balance = debit - credit;
+
+  document.getElementById('totalDebit').textContent = debit.toLocaleString('en-US');
+  document.getElementById('totalCredit').textContent = credit.toLocaleString('en-US');
+  document.getElementById('balanceValue').textContent = Math.abs(balance).toLocaleString('en-US');
+  document.getElementById('balanceLabel').textContent = balance >= 0 ? 'مانده (به نفع من)' : 'مانده (به ضرر من)';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ============ افزودن ============
+function openAddDialog() {
+  document.getElementById('inputName').value = '';
+  document.getElementById('inputAmount').value = '';
+  document.getElementById('inputNote').value = '';
+  setType('debit', document.querySelector('.type-toggle button[data-type="debit"]'));
+  fillDateSelectors();
+  document.getElementById('addModal').classList.add('show');
+}
+
+function closeAddDialog() {
+  document.getElementById('addModal').classList.remove('show');
+}
+
+function setType(t, btn) {
+  currentType = t;
+  document.querySelectorAll('.type-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function saveEntry() {
+  const name = document.getElementById('inputName').value.trim();
+  const amount = parseFloat(document.getElementById('inputAmount').value);
+  const note = document.getElementById('inputNote').value.trim();
+  const y = document.getElementById('selYear').value;
+  const m = document.getElementById('selMonth').value;
+  const d = document.getElementById('selDay').value;
+
+  if (!name) { toast('نام شخص را وارد کنید'); return; }
+  if (!amount || amount <= 0) { toast('مبلغ معتبر وارد کنید'); return; }
+
+  entries.push({
+    id: Date.now(),
+    name, type: currentType, amount,
+    date: `${y}/${String(m).padStart(2,'0')}/${String(d).padStart(2,'0')}`,
+    note
+  });
+  localStorage.setItem(KEY, JSON.stringify(entries));
+  closeAddDialog();
+  render();
+  toast('ثبت شد');
+}
+
+// ============ پشتیبان‌گیری ============
+function backup() {
+  const data = JSON.stringify(entries, null, 2);
+  const t = todayJalali();
+  const stamp = `${t.jy}-${String(t.jm).padStart(2,'0')}-${String(t.jd).padStart(2,'0')}_${Date.now()}`;
+  const filename = `hesab_ketab_backup_${stamp}.json`;
+
+  if (window.AndroidBridge && window.AndroidBridge.saveBackup) {
+    const ok = window.AndroidBridge.saveBackup(filename, data);
+    toast(ok ? 'پشتیبان در پوشهٔ Downloads ذخیره شد' : 'خطا در ذخیره');
+  } else {
+    const blob = new Blob([data], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+    toast('پشتیبان ذخیره شد');
+  }
+}
+
+// ============ بازیابی ============
+function restore() {
+  document.getElementById('restoreInput').click();
+}
+
+document.getElementById('restoreInput').addEventListener('change', (ev) => {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('فرمت نامعتبر');
+      entries = data;
+      localStorage.setItem(KEY, JSON.stringify(entries));
+      render();
+      toast('بازیابی انجام شد');
+    } catch (err) {
+      toast('فایل نامعتبر است');
+    }
+  };
+  reader.readAsText(file);
+  ev.target.value = '';
+});
+
+// ============ اثر انگشت ============
+function askAuth() {
+  if (window.AndroidBridge && window.AndroidBridge.authenticate) {
+    const id = ++authCallbackId;
+    authCallbacks[id] = true;
+    window.AndroidBridge.authenticate(String(id));
+    document.getElementById('lockMsg').textContent = 'در حال بررسی اثر انگشت...';
+  } else {
+    document.getElementById('lockScreen').classList.add('hidden');
+  }
+}
+
+window.onAuthResult = function(id, success, reason) {
+  if (success) {
+    document.getElementById('lockScreen').classList.add('hidden');
+  } else {
+    document.getElementById('lockMsg').textContent = 'احراز هویت ناموفق. دوباره تلاش کنید.';
+  }
+};
+
+// ============ Toast ============
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ============ شروع ============
+render();
+setTimeout(askAuth, 300);
+</script>
+</body>
+</html>
