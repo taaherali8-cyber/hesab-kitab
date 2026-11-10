@@ -1,18 +1,61 @@
 package com.example.hesabketab
 
+import android.net.Uri
 import android.os.Bundle
 import android.webkit.JavascriptInterface
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import java.io.File
-import android.os.Environment
+import java.io.OutputStreamWriter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
+    private var pendingImportCallback: String? = null
+    private var pendingExportCallback: String? = null
+    private var pendingExportContent: String? = null
+
+    private val importLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            val cbId = pendingImportCallback ?: return@registerForActivityResult
+            pendingImportCallback = null
+            if (uri == null) {
+                callJs("window.onImportResult('$cbId', null, 'cancelled')")
+                return@registerForActivityResult
+            }
+            try {
+                val content = contentResolver.openInputStream(uri)
+                    ?.bufferedReader()?.use { it.readText() } ?: ""
+                val escaped = escapeJs(content)
+                callJs("window.onImportResult('$cbId', '$escaped', null)")
+            } catch (e: Exception) {
+                callJs("window.onImportResult('$cbId', null, '${escapeJs(e.message ?: "error")}')")
+            }
+        }
+
+    private val exportLauncher =
+        registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+            val cbId = pendingExportCallback ?: return@registerForActivityResult
+            val content = pendingExportContent ?: ""
+            pendingExportCallback = null
+            pendingExportContent = null
+            if (uri == null) {
+                callJs("window.onExportResult('$cbId', false)")
+                return@registerForActivityResult
+            }
+            try {
+                contentResolver.openOutputStream(uri)?.use { stream ->
+                    OutputStreamWriter(stream).use { it.write(content) }
+                }
+                callJs("window.onExportResult('$cbId', true)")
+            } catch (e: Exception) {
+                callJs("window.onExportResult('$cbId', false)")
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         webView.settings.domStorageEnabled = true
         webView.settings.allowFileAccess = true
         webView.webViewClient = WebViewClient()
+        webView.webChromeClient = WebChromeClient()
         webView.addJavascriptInterface(Bridge(), "AndroidBridge")
         webView.loadUrl("file:///android_asset/index.html")
         setContentView(webView)
@@ -30,29 +74,44 @@ class MainActivity : AppCompatActivity() {
         if (webView.canGoBack()) webView.goBack() else super.onBackPressed()
     }
 
-    inner class Bridge {
+    private fun callJs(js: String) {
+        runOnUiThread { webView.evaluateJavascript(js, null) }
+    }
 
+    private fun escapeJs(s: String): String {
+        return s.replace("\\", "\\\\")
+            .replace("'", "\\'")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+    }
+
+    inner class Bridge {
         @JavascriptInterface
         fun authenticate(callbackId: String) {
             runOnUiThread { startAuth(callbackId) }
         }
 
         @JavascriptInterface
-        fun saveBackup(filename: String, content: String): Boolean {
-            return try {
-                val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                if (!dir.exists()) dir.mkdirs()
-                val file = File(dir, filename)
-                file.writeText(content)
-                true
-            } catch (e: Exception) {
-                false
-            }
+        fun hasBiometric(): Boolean {
+            val manager = BiometricManager.from(this@MainActivity)
+            return manager.canAuthenticate(
+                BiometricManager.Authenticators.BIOMETRIC_STRONG
+            ) == BiometricManager.BIOMETRIC_SUCCESS
         }
 
         @JavascriptInterface
-        fun exitApp() {
-            runOnUiThread { finish() }
+        fun exportBackup(callbackId: String, filename: String, content: String) {
+            pendingExportCallback = callbackId
+            pendingExportContent = content
+            runOnUiThread { exportLauncher.launch(filename) }
+        }
+
+        @JavascriptInterface
+        fun importBackup(callbackId: String) {
+            pendingImportCallback = callbackId
+            runOnUiThread {
+                importLauncher.launch(arrayOf("application/json", "text/plain", "*/*"))
+            }
         }
     }
 
@@ -60,21 +119,24 @@ class MainActivity : AppCompatActivity() {
         val manager = BiometricManager.from(this)
         val can = manager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
         if (can != BiometricManager.BIOMETRIC_SUCCESS) {
-            webView.evaluateJavascript("window.onAuthResult('$callbackId', true, 'unavailable');", null)
+            callJs("window.onAuthResult('$callbackId', true, 'unavailable');")
             return
         }
 
         val executor = ContextCompat.getMainExecutor(this)
-        val prompt = BiometricPrompt(this, executor,
+        val prompt = BiometricPrompt(
+            this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    webView.evaluateJavascript("window.onAuthResult('$callbackId', true, 'ok');", null)
+                    callJs("window.onAuthResult('$callbackId', true, 'ok');")
                 }
+
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    webView.evaluateJavascript("window.onAuthResult('$callbackId', false, 'error');", null)
+                    callJs("window.onAuthResult('$callbackId', false, 'error');")
                 }
+
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
                 }
