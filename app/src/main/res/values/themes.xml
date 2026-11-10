@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HesabKetab" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">#00897B</item>
+        <item name="colorPrimaryDark">#00695C</item>
+        <item name="colorAccent">#26A69A</item>
+    </style>
+</resources>
