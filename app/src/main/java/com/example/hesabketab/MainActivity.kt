@@ -1,6 +1,5 @@
 package com.example.hesabketab
 
-import android.net.Uri
 import android.os.Bundle
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
@@ -60,9 +59,27 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         webView = WebView(this)
+        
+        // تنظیمات حیاتی برای اجرای درست
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
+        webView.settings.databaseEnabled = true
         webView.settings.allowFileAccess = true
+        webView.settings.allowContentAccess = true
+        webView.settings.loadWithOverviewMode = true
+        webView.settings.useWideViewPort = true
+        
+        // جلوگیری از کش شدن کدهای قدیمی
+        webView.clearCache(true)
+        webView.clearHistory()
+        
+        // فوکوس‌پذیر کردن WebView تا کلیک‌ها را دریافت کند
+        webView.isClickable = true
+        webView.isFocusable = true
+        webView.isFocusableInTouchMode = true
+        webView.requestFocus()
+        webView.requestFocusFromTouch()
+
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = WebChromeClient()
         webView.addJavascriptInterface(Bridge(), "AndroidBridge")
