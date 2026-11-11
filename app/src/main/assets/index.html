@@ -5,32 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>حساب و کتاب</title>
 <style>
-:root[data-theme="light"]{--primary:#00897B;--primary-dark:#00695C;--bg:#F5F5F5;--surface:#FFF;--text:#212121;--text2:#757575;--border:#E0E0E0;--input-bg:#FAFAFA;--shadow:0 2px 8px rgba(0,0,0,0.08);--green:#2E7D32;--green-bg:#E8F5E9;--red:#C62828;--red-bg:#FFEBEE;--nav-shadow:0 -2px 8px rgba(0,0,0,0.06);--primary-light:#E0F2F1}
-:root[data-theme="dark"]{--primary:#26A69A;--primary-dark:#00897B;--bg:#121212;--surface:#1E1E1E;--text:#E0E0E0;--text2:#9E9E9E;--border:#333;--input-bg:#2A2A2A;--shadow:0 2px 8px rgba(0,0,0,0.4);--green:#66BB6A;--green-bg:#1B2E1F;--red:#EF5350;--red-bg:#2E1B1B;--nav-shadow:0 -2px 8px rgba(0,0,0,0.3);--primary-light:#00332E}
+:root[data-theme="light"]{--primary:#00897B;--primary-dark:#00695C;--bg:#F5F5F5;--surface:#FFF;--text:#212121;--text2:#757575;--border:#E0E0E0;--input-bg:#FAFAFA;--shadow:0 2px 8px rgba(0,0,0,0.08);--green:#2E7D32;--green-bg:#E8F5E9;--red:#C62828;--red-bg:#FFEBEE;--nav-shadow:0 -2px 8px rgba(0,0,0,0.06);--primary-light:#E0F2F1;--card-bg:#FFF}
+:root[data-theme="dark"]{--primary:#26A69A;--primary-dark:#00897B;--bg:#121212;--surface:#1E1E1E;--text:#E0E0E0;--text2:#9E9E9E;--border:#333;--input-bg:#2A2A2A;--shadow:0 2px 8px rgba(0,0,0,0.4);--green:#66BB6A;--green-bg:#1B2E1F;--red:#EF5350;--red-bg:#2E1B1B;--nav-shadow:0 -2px 8px rgba(0,0,0,0.3);--primary-light:#00332E;--card-bg:#1E1E1E}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent}
+body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent;transition:background 0.3s, color 0.3s}
 .app{display:flex;flex-direction:column;height:100vh;height:100dvh}
-.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch; padding-bottom: 20px;}
 .screen{display:none;padding-bottom:20px}
 .screen.active{display:block}
 .hidden{display:none !important}
 .header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:20px 16px 24px;border-radius:0 0 24px 24px;box-shadow:var(--shadow)}
 .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .header h1{font-size:20px;font-weight:700}
-.stats{display:flex;gap:10px}
-.stat{flex:1;background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px}
-.stat .label{font-size:11px;opacity:0.9;margin-bottom:4px}
-.stat .value{font-size:17px;font-weight:700}
-.stat.debit .value{color:#B9F6CA}
-.stat.credit .value{color:#FFCDD2}
-.balance{margin-top:10px;padding:10px 14px;background:rgba(255,255,255,0.18);border-radius:12px;display:flex;justify-content:space-between;align-items:center}
-.balance .label{font-size:13px}
-.balance .value{font-size:18px;font-weight:700;transition:color 0.3s}
 .page-header{background:var(--surface);padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .page-header h1{font-size:18px;font-weight:700}
 .list{padding:12px;display:flex;flex-direction:column;gap:8px}
-.empty{text-align:center;padding:60px 20px;color:var(--text2);font-size:14px;line-height:1.8}
+.empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:14px;line-height:1.8}
 .card{background:var(--surface);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;position:relative;cursor:pointer}
 .avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;color:#fff}
 .card-body{flex:1;min-width:0}
@@ -41,13 +32,11 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .card-amount.credit{color:var(--red)}
 .badge{font-size:10px;padding:2px 6px;border-radius:6px;font-weight:700;background:var(--primary-light);color:var(--primary)}
 .fab{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:20px;background:var(--primary);color:#fff;border:none;width:56px;height:56px;border-radius:18px;font-size:28px;box-shadow:0 6px 16px rgba(0,137,123,0.4);cursor:pointer;z-index:50}
-.bottom-nav{display:flex;background:var(--surface);border-top:1px solid var(--border);box-shadow:var(--nav-shadow);padding:6px 0 env(safe-area-inset-bottom,6px)}
+.bottom-nav{display:flex;background:var(--surface);border-top:1px solid var(--border);box-shadow:var(--nav-shadow);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:60}
 .bottom-nav button{flex:1;background:none;border:none;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text2);font-family:inherit;font-size:11px;cursor:pointer}
 .bottom-nav button.active{color:var(--primary);font-weight:700}
 .bottom-nav button .icon{font-size:22px}
-
-/* مودال‌ها باید از همه چیز بالاتر باشند (Z-Index) */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;z-index:9999}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;justify-content:center;z-index:9999}
 .modal-overlay.show{display:flex}
 .modal{background:var(--surface);border-radius:22px 22px 0 0;width:100%;max-width:500px;padding:20px 16px;max-height:90vh;overflow-y:auto}
 .modal h2{font-size:17px;margin-bottom:16px;text-align:center}
@@ -64,15 +53,25 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .modal-actions button{flex:1;padding:13px;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer}
 .btn-cancel{background:var(--border);color:var(--text)}
 .btn-save{background:var(--primary);color:#fff}
-.settings-group{padding:8px 12px}
-.settings-group h3{font-size:12px;color:var(--text2);font-weight:700;padding:8px 6px 6px}
-.setting-item{background:var(--surface);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer}
-.setting-item .setting-label{font-size:14px;font-weight:600}
-.setting-item .setting-sub{font-size:12px;color:var(--text2);margin-top:2px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;z-index:10000;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .toast.show{opacity:1}
 
-/* استایل صفحه جزئیات شخص */
+/* Home Action Buttons */
+.action-buttons{display:flex;gap:10px;padding:16px}
+.action-btn-big{flex:1;padding:16px;border-radius:14px;border:none;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;gap:8px}
+.action-btn-big.debit{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
+.action-btn-big.credit{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
+
+/* Summary Section at bottom of home */
+.summary-section{margin:16px;padding:16px;background:var(--surface);border-radius:14px;box-shadow:var(--shadow)}
+.summary-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}
+.summary-row:last-child{border-bottom:none;padding-top:12px;font-weight:700;font-size:16px}
+
+/* Search Box */
+.search-box{padding:12px;background:var(--surface)}
+.search-box input{width:100%;padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--input-bg);color:var(--text);font-family:inherit;font-size:14px;outline:none}
+
+/* Person Detail Screen */
 .detail-screen { position: fixed; inset: 0; background: var(--bg); z-index: 200; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s ease; }
 .detail-screen.show { transform: translateX(0); }
 .detail-header { background: var(--surface); padding: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
@@ -82,26 +81,84 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .detail-header-info .balance { font-size: 14px; font-weight: 700; }
 .detail-list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .add-person-btn { background: var(--primary); color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.del-btn {background:none;border:none;font-size:18px;cursor:pointer;padding:6px;margin-left:4px}
+
+/* Report Styles */
+.report-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.report-btn{padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-weight:700;cursor:pointer;text-align:center}
+.report-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.report-result{margin:12px;padding:16px;background:var(--surface);border-radius:14px;box-shadow:var(--shadow);text-align:center}
+.report-result h3{font-size:16px;margin-bottom:12px;color:var(--primary)}
+.report-stat{font-size:15px;margin:8px 0;display:flex;justify-content:space-between}
+
+/* Settings Font Size */
+.font-sizes{display:flex;gap:8px;padding:4px 12px}
+.font-size-btn{flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit}
+.font-size-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 </style>
 </head>
 <body>
 
 <div class="app" id="app">
   <div class="content" id="content">
-    <!-- صفحه خانه (خلاصه) -->
+    
+    <!-- صفحه خانه -->
     <div class="screen active" id="homeScreen">
       <div class="header">
-        <div class="header-top">
-          <h1>حساب و کتاب</h1>
-        </div>
-        <div class="stats">
-          <div class="stat debit"><div class="label">طلب من</div><div class="value" id="totalDebit">0</div></div>
-          <div class="stat credit"><div class="label">بدهی من</div><div class="value" id="totalCredit">0</div></div>
-        </div>
-        <div class="balance"><span class="label" id="balanceLabel">مانده</span><span class="value" id="balanceValue">0</span></div>
+        <div class="header-top"><h1>حساب و کتاب</h1></div>
       </div>
-      <div class="section-title" style="font-size:13px;color:var(--text2);font-weight:700;padding:8px 14px 4px;">آخرین تراکنش‌ها</div>
+      
+      <div class="action-buttons">
+        <button class="action-btn-big debit" onclick="openQuickAdd('debit')">↓ ثبت بدهی</button>
+        <button class="action-btn-big credit" onclick="openQuickAdd('credit')">↑ ثبت طلب</button>
+      </div>
+
+      <div class="section-title" style="font-size:13px;color:var(--text2);font-weight:700;padding:8px 16px;">اشخاص (بر اساس آخرین تراکنش)</div>
       <div class="list" id="homeList"></div>
+
+      <div class="summary-section">
+        <div class="summary-row"><span>مجموع طلب من:</span><span id="homeTotalDebit" style="color:var(--green);font-weight:700;">0</span></div>
+        <div class="summary-row"><span>مجموع بدهی من:</span><span id="homeTotalCredit" style="color:var(--red);font-weight:700;">0</span></div>
+        <div class="summary-row"><span>مانده کل:</span><span id="homeBalance">0</span></div>
+      </div>
+    </div>
+
+    <!-- صفحه تاریخچه -->
+    <div class="screen" id="historyScreen">
+      <div class="page-header"><h1>تاریخچه</h1></div>
+      <div class="search-box">
+        <input type="text" id="historySearch" placeholder="جستجو در نام، مبلغ، یادداشت..." onkeyup="renderHistory()">
+      </div>
+      <div class="list" id="historyList"></div>
+    </div>
+
+    <!-- صفحه گزارش -->
+    <div class="screen" id="reportsScreen">
+      <div class="page-header"><h1>گزارش‌گیری</h1></div>
+      <div class="report-buttons">
+        <button class="report-btn active" onclick="setReportType('daily', this)">روزانه</button>
+        <button class="report-btn" onclick="setReportType('monthly', this)">ماهانه</button>
+        <button class="report-btn" onclick="setReportType('yearly', this)">سالانه</button>
+        <button class="report-btn" onclick="setReportType('custom', this)">دلخواه</button>
+      </div>
+      
+      <div id="customDateContainer" class="hidden" style="padding:12px; background:var(--surface); border-radius:14px; margin:0 12px;">
+        <div class="field"><label>از تاریخ</label>
+          <div class="date-row">
+            <select id="repStartY"></select><select id="repStartM"></select><select id="repStartD"></select>
+          </div>
+        </div>
+        <div class="field"><label>تا تاریخ</label>
+          <div class="date-row">
+            <select id="repEndY"></select><select id="repEndM"></select><select id="repEndD"></select>
+          </div>
+        </div>
+        <button class="btn-save" style="width:100%;padding:12px;border-radius:10px;border:none;font-family:inherit;font-weight:700;" onclick="calculateCustomReport()">نمایش گزارش</button>
+      </div>
+
+      <div class="report-result" id="reportResult">
+        <!-- نتایج اینجا نمایش داده می‌شود -->
+      </div>
     </div>
 
     <!-- صفحه اشخاص -->
@@ -110,19 +167,32 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
         <h1>اشخاص</h1>
         <button class="add-person-btn" onclick="openAddPersonModal()">+ شخص جدید</button>
       </div>
+      <div class="search-box">
+        <input type="text" id="peopleSearch" placeholder="جستجوی شخص..." onkeyup="renderPeopleList()">
+      </div>
       <div class="list" id="peopleList"></div>
     </div>
 
     <!-- صفحه تنظیمات -->
     <div class="screen" id="settingsScreen">
       <div class="page-header"><h1>تنظیمات</h1></div>
+      
       <div class="settings-group">
         <h3>ظاهر</h3>
         <div class="setting-item" onclick="toggleTheme()">
           <div class="setting-info"><div class="setting-label">تم برنامه</div><div class="setting-sub" id="themeStatus">روشن</div></div>
           <div style="font-size:22px;">🎨</div>
         </div>
+        <div class="setting-item" style="flex-direction:column;align-items:flex-start;cursor:default;">
+          <div class="setting-label" style="margin-bottom:8px;">اندازه فونت</div>
+          <div class="font-sizes" style="width:100%;padding:0;">
+            <button class="font-size-btn" onclick="setFontSize('small', this)">کوچک</button>
+            <button class="font-size-btn active" onclick="setFontSize('medium', this)">متوسط</button>
+            <button class="font-size-btn" onclick="setFontSize('large', this)">بزرگ</button>
+          </div>
+        </div>
       </div>
+
       <div class="settings-group">
         <h3>داده‌ها</h3>
         <div class="setting-item" onclick="backupData()">
@@ -135,12 +205,13 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
         </div>
       </div>
     </div>
-  </div>
 
-  <button class="fab" id="fabBtn" onclick="openAddPersonModal()">＋</button>
+  </div>
 
   <nav class="bottom-nav">
     <button class="active" onclick="switchTab('homeScreen', this)"><span class="icon">🏠</span><span>خانه</span></button>
+    <button onclick="switchTab('historyScreen', this)"><span class="icon">📜</span><span>تاریخچه</span></button>
+    <button onclick="switchTab('reportsScreen', this)"><span class="icon">📊</span><span>گزارش</span></button>
     <button onclick="switchTab('peopleScreen', this)"><span class="icon">👥</span><span>اشخاص</span></button>
     <button onclick="switchTab('settingsScreen', this)"><span class="icon">⚙️</span><span>تنظیمات</span></button>
   </nav>
@@ -149,7 +220,6 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 <!-- صفحه جزئیات یک شخص -->
 <div class="detail-screen" id="personDetailScreen">
   <div class="detail-header">
-    <!-- فلش برگشت به سمت راست (چون راست‌چین هستیم) -->
     <button class="back-btn" onclick="closePersonDetail()">&#10095;</button>
     <div class="detail-header-info">
       <h2 id="detailPersonName">نام شخص</h2>
@@ -157,29 +227,37 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
     </div>
   </div>
   <div class="detail-list" id="personTransactionsList"></div>
-  <button class="fab" style="left: 20px;" onclick="openAddTransactionModal()">＋</button>
+  <button class="fab" onclick="openAddTransactionModal()">＋</button>
 </div>
 
-<!-- مودال ثبت شخص جدید -->
-<div class="modal-overlay" id="addPersonModal">
+<!-- مودال ثبت/ویرایش شخص -->
+<div class="modal-overlay" id="personModal">
   <div class="modal">
-    <h2>افزودن شخص جدید</h2>
-    <div class="field"><label>نام شخص</label><input type="text" id="newPersonName" placeholder="مثلاً علی"></div>
+    <h2 id="personModalTitle">افزودن شخص</h2>
+    <div class="field"><label>نام شخص</label><input type="text" id="personNameInput" placeholder="مثلاً علی"></div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeAddPersonModal()">انصراف</button>
+      <button class="btn-cancel" onclick="closePersonModal()">انصراف</button>
       <button class="btn-save" onclick="savePerson()">ذخیره</button>
     </div>
   </div>
 </div>
 
-<!-- مودال ثبت تراکنش جدید (برای شخص) -->
-<div class="modal-overlay" id="addTransactionModal">
+<!-- مودال ثبت تراکنش جدید (از طریق صفحه شخص یا دکمه‌های خانه) -->
+<div class="modal-overlay" id="transactionModal">
   <div class="modal">
     <h2 id="txModalTitle">تراکنش جدید</h2>
-    <div class="type-toggle">
-      <button data-type="debit" class="active" onclick="setType('debit', this)">بدهکار (طلب من)</button>
-      <button data-type="credit" onclick="setType('credit', this)">بستانکار (بدهی من)</button>
+    
+    <div class="type-toggle" id="txTypeToggle">
+      <button data-type="debit" class="active" onclick="setTxType('debit', this)">بدهکار (طلب من)</button>
+      <button data-type="credit" onclick="setTxType('credit', this)">بستانکار (بدهی من)</button>
     </div>
+
+    <!-- انتخاب شخص (اگر از خانه آمده باشیم) -->
+    <div class="field" id="txPersonSelectContainer">
+      <label>انتخاب شخص</label>
+      <select id="txPersonSelect"></select>
+    </div>
+
     <div class="field"><label>مبلغ</label><input type="text" id="txAmount" placeholder="50,000" inputmode="numeric" dir="ltr"></div>
     <div class="field"><label>دسته‌بندی</label>
       <select id="txCategory">
@@ -199,7 +277,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
     </div>
     <div class="field"><label>توضیحات (اختیاری)</label><input type="text" id="txNote" placeholder="مثلاً علی‌الحساب"></div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeAddTransactionModal()">انصراف</button>
+      <button class="btn-cancel" onclick="closeTransactionModal()">انصراف</button>
       <button class="btn-save" onclick="saveTransaction()">ذخیره</button>
     </div>
   </div>
@@ -209,30 +287,31 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 
 <script>
 // ==========================================
-// داده‌ها و متغیرها
+// متغیرها و ذخیره‌سازی
 // ==========================================
 var people = []; 
 var transactions = []; 
+var currentTxType = 'debit';
+var currentSelectedPersonId = null; 
+var editingPersonId = null; 
+var currentFontSize = 'medium';
+var currentReportType = 'daily';
 
-var currentType = 'debit';
-var currentSelectedPersonId = null;
 var monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
-
-var STORAGE_KEY = 'hesab_ketab_v2';
+var STORAGE_KEY = 'hesab_ketab_v3';
 
 function get(id) { return document.getElementById(id); }
 function fmt(num) { return Number(num).toLocaleString('en-US'); }
 function toast(msg) {
-  var t = get('toast');
-  if(t) { t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2000); }
+  var t = get('toast'); if(t) { t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2000); }
 }
 
-// ==========================================
-// ذخیره و بازیابی خودکار
-// ==========================================
 function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ people: people, transactions: transactions })); } catch(e) {}
+  try { 
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ people: people, transactions: transactions, fontSize: currentFontSize })); 
+  } catch(e) {}
 }
+
 function loadData() {
   try {
     var raw = localStorage.getItem(STORAGE_KEY);
@@ -240,8 +319,61 @@ function loadData() {
       var data = JSON.parse(raw);
       people = data.people || [];
       transactions = data.transactions || [];
+      if(data.fontSize) currentFontSize = data.fontSize;
     }
   } catch(e) { people = []; transactions = []; }
+}
+
+// ==========================================
+// تاریخ شمسی و زمان
+// ==========================================
+function getTodayJalali() {
+  var now = new Date(), gy = now.getFullYear(), gm = now.getMonth() + 1, gd = now.getDate();
+  var g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+  var jy = (gy <= 1600) ? 0 : 979; gy -= (gy <= 1600) ? 621 : 1600;
+  var gy2 = (gm > 2) ? (gy + 1) : gy;
+  var days = (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
+  jy += 33 * Math.floor(days / 12053); days %= 12053;
+  jy += 4 * Math.floor(days / 1461); days %= 1461;
+  if (days > 365) { jy += Math.floor((days - 1) / 365); days = (days - 1) % 365; }
+  var jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+  var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+  return { jy: jy, jm: jm, jd: jd };
+}
+
+function getMonthLength(jy, jm) {
+  if (jm <= 6) return 31; if (jm <= 11) return 30;
+  return [1,5,9,13,17,22,26,30].indexOf(jy % 33) >= 0 ? 30 : 29;
+}
+
+function fillDateSelectors(yId, mId, dId, isOptional, defJ) {
+  var t = getTodayJalali();
+  var jy = defJ ? defJ.jy : t.jy;
+  var jm = defJ ? defJ.jm : t.jm;
+  var jd = defJ ? defJ.jd : t.jd;
+
+  var selY = get(yId), selM = get(mId), selD = get(dId);
+  var htmlY = isOptional ? '<option value="">---</option>' : '';
+  for (var i = 1400; i <= 1420; i++) htmlY += '<option value="' + i + '"' + (i === jy ? ' selected' : '') + '>' + i + '</option>';
+  selY.innerHTML = htmlY;
+  
+  var htmlM = isOptional ? '<option value="">---</option>' : '';
+  for (var j = 1; j <= 12; j++) htmlM += '<option value="' + j + '"' + (j === jm ? ' selected' : '') + '>' + monthNames[j-1] + '</option>';
+  selM.innerHTML = htmlM;
+  
+  updateDayOptions(yId, mId, dId, isOptional, jd);
+  selY.onchange = function() { updateDayOptions(yId, mId, dId, isOptional); };
+  selM.onchange = function() { updateDayOptions(yId, mId, dId, isOptional); };
+}
+
+function updateDayOptions(yId, mId, dId, isOptional, selectDay) {
+  var y = +get(yId).value, m = +get(mId).value;
+  var selD = get(dId);
+  if (!y || !m) { selD.innerHTML = '<option value="">---</option>'; return; }
+  var len = getMonthLength(y, m);
+  var prev = selectDay || +selD.value || 1; if (prev > len) prev = len;
+  var html = ''; for (var d = 1; d <= len; d++) html += '<option value="' + d + '"' + (d === prev ? ' selected' : '') + '>' + d + '</option>';
+  selD.innerHTML = html;
 }
 
 // ==========================================
@@ -258,39 +390,15 @@ function getPersonBalance(personId) {
   return bal;
 }
 
-// ==========================================
-// تاریخ شمسی
-// ==========================================
-function getTodayJalali() {
-  var now = new Date(), gy = now.getFullYear(), gm = now.getMonth() + 1, gd = now.getDate();
-  var g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
-  var jy = (gy <= 1600) ? 0 : 979; gy -= (gy <= 1600) ? 621 : 1600;
-  var gy2 = (gm > 2) ? (gy + 1) : gy;
-  var days = (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
-  jy += 33 * Math.floor(days / 12053); days %= 12053;
-  jy += 4 * Math.floor(days / 1461); days %= 1461;
-  if (days > 365) { jy += Math.floor((days - 1) / 365); days = (days - 1) % 365; }
-  var jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
-  var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
-  return { jy: jy, jm: jm, jd: jd };
-}
-function getMonthLength(jy, jm) {
-  if (jm <= 6) return 31; if (jm <= 11) return 30;
-  return [1,5,9,13,17,22,26,30].indexOf(jy % 33) >= 0 ? 30 : 29;
-}
-function fillDateSelectors() {
-  var t = getTodayJalali(), selY = get('txYear'), selM = get('txMonth'), selD = get('txDay');
-  var htmlY = ''; for (var i = 1400; i <= 1420; i++) htmlY += '<option value="' + i + '"' + (i === t.jy ? ' selected' : '') + '>' + i + '</option>';
-  selY.innerHTML = htmlY;
-  var htmlM = ''; for (var j = 1; j <= 12; j++) htmlM += '<option value="' + j + '"' + (j === t.jm ? ' selected' : '') + '>' + monthNames[j-1] + '</option>';
-  selM.innerHTML = htmlM; updateDayOptions(t.jd);
-  selY.onchange = function() { updateDayOptions(); }; selM.onchange = function() { updateDayOptions(); };
-}
-function updateDayOptions(selectDay) {
-  var y = +get('txYear').value, m = +get('txMonth').value, len = getMonthLength(y, m);
-  var prev = selectDay || +get('txDay').value || 1; if (prev > len) prev = len;
-  var html = ''; for (var d = 1; d <= len; d++) html += '<option value="' + d + '"' + (d === prev ? ' selected' : '') + '>' + d + '</option>';
-  get('txDay').innerHTML = html;
+function getLastTxDate(personId) {
+  var maxId = 0, dateStr = '---';
+  for (var i = 0; i < transactions.length; i++) {
+    if (transactions[i].personId === personId && transactions[i].id > maxId) {
+      maxId = transactions[i].id;
+      dateStr = transactions[i].date;
+    }
+  }
+  return dateStr;
 }
 
 // ==========================================
@@ -300,17 +408,152 @@ function switchTab(screenId, btn) {
   var screens = document.querySelectorAll('.screen');
   for (var i = 0; i < screens.length; i++) { screens[i].classList.remove('active'); }
   var target = get(screenId); if (target) { target.classList.add('active'); }
+  
   var btns = document.querySelectorAll('.bottom-nav button');
   for (var j = 0; j < btns.length; j++) { btns[j].classList.remove('active'); }
-  if (btn) { btn.classList.add('active'); }
+  if (btn) { btns[j].classList.remove('active'); btn.classList.add('active'); }
 
-  var fab = get('fabBtn');
-  if (fab) {
-    if (screenId === 'settingsScreen') fab.style.display = 'none';
-    else { fab.style.display = 'block'; }
-  }
+  if(screenId === 'homeScreen') renderHome();
+  if(screenId === 'historyScreen') renderHistory();
+  if(screenId === 'peopleScreen') renderPeopleList();
+  if(screenId === 'reportsScreen') setReportType(currentReportType, document.querySelector('.report-btn.active'));
 }
 
+// ==========================================
+// رندر صفحه خانه
+// ==========================================
+function renderHome() {
+  var totalDebit = 0, totalCredit = 0;
+  for (var i = 0; i < transactions.length; i++) {
+    if (transactions[i].type === 'debit') totalDebit += transactions[i].amount;
+    else totalCredit += transactions[i].amount;
+  }
+  get('homeTotalDebit').textContent = fmt(totalDebit);
+  get('homeTotalCredit').textContent = fmt(totalCredit);
+  
+  var bal = totalDebit - totalCredit;
+  var balEl = get('homeBalance');
+  balEl.textContent = fmt(Math.abs(bal));
+  if (bal > 0) { balEl.style.color = 'var(--green)'; balEl.textContent = fmt(bal) + ' طلب'; }
+  else if (bal < 0) { balEl.style.color = 'var(--red)'; balEl.textContent = fmt(-bal) + ' بدهی'; }
+  else { balEl.style.color = 'var(--text2)'; balEl.textContent = 'تسویه'; }
+
+  // مرتب‌سازی اشخاص بر اساس آخرین تراکنش
+  var peopleWithTx = people.map(function(p) {
+    var lastTx = transactions.filter(function(t){ return t.personId === p.id; }).pop();
+    return { person: p, lastTxTime: lastTx ? lastTx.id : 0, lastDate: lastTx ? lastTx.date : '---' };
+  });
+  peopleWithTx.sort(function(a, b) { return b.lastTxTime - a.lastTxTime; });
+
+  var el = get('homeList');
+  if (peopleWithTx.length === 0) {
+    el.innerHTML = '<div class="empty">هنوز شخصی ثبت نشده است</div>';
+    return;
+  }
+
+  var html = '';
+  for (var k = 0; k < peopleWithTx.length; k++) {
+    var p = peopleWithTx[k].person;
+    var pBal = getPersonBalance(p.id);
+    var color = pBal > 0 ? 'var(--green)' : (pBal < 0 ? 'var(--red)' : 'var(--text2)');
+    var balText = pBal > 0 ? fmt(pBal) : (pBal < 0 ? fmt(-pBal) : '0');
+
+    html += '<div class="card" onclick="openPersonDetail(' + p.id + ')">' +
+      '<div class="avatar" style="background:#5C6BC0">' + p.name.charAt(0) + '</div>' +
+      '<div class="card-body">' +
+      '<div class="card-name">' + p.name + '</div>' +
+      '<div class="card-sub">آخرین: ' + peopleWithTx[k].lastDate + '</div>' +
+      '</div>' +
+      '<div class="card-amount" style="color:' + color + '">' + balText + '</div>' +
+      '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ==========================================
+// رندر تاریخچه
+// ==========================================
+function renderHistory() {
+  var query = get('historySearch').value.trim().toLowerCase();
+  var sortedTx = transactions.slice().sort(function(a, b) { return b.id - a.id; });
+  
+  if (query !== '') {
+    sortedTx = sortedTx.filter(function(t) {
+      var pName = (people.find(function(p) { return p.id === t.personId; }) || {}).name || '';
+      return pName.toLowerCase().indexOf(query) >= 0 || 
+             (t.note || '').toLowerCase().indexOf(query) >= 0 ||
+             (t.category || '').toLowerCase().indexOf(query) >= 0 ||
+             String(t.amount).indexOf(query) >= 0;
+    });
+  }
+
+  var el = get('historyList');
+  if (sortedTx.length === 0) {
+    el.innerHTML = '<div class="empty">تراکنشی یافت نشد</div>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < sortedTx.length; i++) {
+    var t = sortedTx[i];
+    var person = people.find(function(p) { return p.id === t.personId; }) || { name: 'ناشناس' };
+    var sign = t.type === 'debit' ? '↓' : '↑';
+    var bgColor = t.type === 'debit' ? '#2E7D32' : '#C62828';
+    var catHtml = t.category ? '<span class="badge">' + t.category + '</span>' : '';
+    var noteHtml = t.note ? ' • ' + t.note : '';
+    var timeStr = t.time || '';
+
+    html += '<div class="card" onclick="openPersonDetail(' + t.personId + ')">' +
+      '<div class="avatar" style="background:' + bgColor + '">' + sign + '</div>' +
+      '<div class="card-body">' +
+      '<div class="card-name">' + person.name + ' ' + catHtml + '</div>' +
+      '<div class="card-sub">' + t.date + ' - ' + timeStr + noteHtml + '</div>' +
+      '</div>' +
+      '<div class="card-amount ' + t.type + '">' + fmt(t.amount) + '</div>' +
+      '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ==========================================
+// رندر اشخاص
+// ==========================================
+function renderPeopleList() {
+  var query = get('peopleSearch').value.trim().toLowerCase();
+  var el = get('peopleList');
+  
+  var filtered = people.filter(function(p) {
+    return p.name.toLowerCase().indexOf(query) >= 0;
+  });
+  
+  if (filtered.length === 0) {
+    el.innerHTML = '<div class="empty">شخصی یافت نشد</div>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var p = filtered[i];
+    var bal = getPersonBalance(p.id);
+    var color = bal > 0 ? 'var(--green)' : (bal < 0 ? 'var(--red)' : 'var(--text2)');
+    var balText = bal > 0 ? fmt(bal) : (bal < 0 ? fmt(-bal) : '0');
+    
+    html += '<div class="card" onclick="openPersonDetail(' + p.id + ')">' +
+      '<div class="avatar" style="background:#5C6BC0">' + p.name.charAt(0) + '</div>' +
+      '<div class="card-body">' +
+      '<div class="card-name">' + p.name + '</div>' +
+      '<div class="card-sub">مانده: <span style="color:' + color + ';font-weight:700;">' + balText + '</span></div>' +
+      '</div>' +
+      '<button class="del-btn" onclick="event.stopPropagation(); openEditPersonModal(' + p.id + ')" style="color:var(--primary);">✏️</button>' +
+      '<button class="del-btn" onclick="event.stopPropagation(); deletePerson(' + p.id + ')" style="color:var(--red);">🗑️</button>' +
+      '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ==========================================
+// صفحه جزئیات شخص
+// ==========================================
 function openPersonDetail(personId) {
   currentSelectedPersonId = personId;
   var person = people.find(function(p) { return p.id === personId; });
@@ -339,7 +582,7 @@ function renderPersonTransactions() {
   listTx.sort(function(a, b) { return b.id - a.id; });
 
   if (listTx.length === 0) {
-    list.innerHTML = '<div class="empty">هنوز تراکنشی برای این شخص ثبت نشده است.<br>برای ثبت، دکمه + را بزنید.</div>';
+    list.innerHTML = '<div class="empty">تراکنشی ثبت نشده است</div>';
     return;
   }
   var html = '';
@@ -350,12 +593,13 @@ function renderPersonTransactions() {
     var catHtml = t.category ? '<span class="badge">' + t.category + '</span>' : '';
     var noteHtml = t.note ? ' • ' + t.note : '';
     var typeTitle = (t.type === 'debit') ? 'بدهکار' : 'بستانکار';
+    var timeStr = t.time || '';
     
     html += '<div class="card">' +
       '<div class="avatar" style="background:' + bgColor + '">' + sign + '</div>' +
       '<div class="card-body">' +
       '<div class="card-name">' + typeTitle + ' ' + catHtml + '</div>' +
-      '<div class="card-sub">' + t.date + noteHtml + '</div>' +
+      '<div class="card-sub">' + t.date + ' - ' + timeStr + noteHtml + '</div>' +
       '</div>' +
       '<div class="card-amount ' + t.type + '">' + fmt(t.amount) + '</div>' +
       '</div>';
@@ -363,106 +607,102 @@ function renderPersonTransactions() {
   list.innerHTML = html;
 }
 
-function renderPeopleList() {
-  var el = get('peopleList');
-  if (people.length === 0) {
-    el.innerHTML = '<div class="empty">هنوز شخصی تعریف نکرده‌اید.<br>روی دکمه + یا «شخص جدید» بزنید.</div>';
-    return;
-  }
-  var html = '';
-  for (var i = 0; i < people.length; i++) {
-    var p = people[i];
-    var bal = getPersonBalance(p.id);
-    var balText = bal > 0 ? fmt(bal) : (bal < 0 ? fmt(-bal) : '0');
-    var color = bal > 0 ? 'var(--green)' : (bal < 0 ? 'var(--red)' : 'var(--text2)');
-    var subText = (bal === 0 ? 'تسویه' : (bal > 0 ? 'طلب من' : 'بدهی من'));
-
-    html += '<div class="card" onclick="openPersonDetail(' + p.id + ')">' +
-      '<div class="avatar" style="background:#5C6BC0">' + p.name.charAt(0) + '</div>' +
-      '<div class="card-body">' +
-      '<div class="card-name">' + p.name + '</div>' +
-      '<div class="card-sub">' + subText + '</div>' +
-      '</div>' +
-      '<div class="card-amount" style="color:' + color + '">' + balText + '</div>' +
-      '<div style="color:var(--text2);font-size:20px;margin-right:8px;">&#10094;</div>' + /* فلش چپ برای رفتن به جزئیات */
-      '</div>';
-  }
-  el.innerHTML = html;
-}
-
-function renderHome() {
-  var td = 0, tc = 0;
-  for (var i = 0; i < transactions.length; i++) {
-    if (transactions[i].type === 'debit') td += transactions[i].amount;
-    else tc += transactions[i].amount;
-  }
-  get('totalDebit').textContent = fmt(td);
-  get('totalCredit').textContent = fmt(tc);
-
-  var bal = td - tc, balEl = get('balanceValue'), balLbl = get('balanceLabel');
-  balEl.textContent = fmt(Math.abs(bal));
-  if (bal > 0) { balEl.style.color = '#B9F6CA'; balLbl.textContent = 'مانده (طلبکار)'; }
-  else if (bal < 0) { balEl.style.color = '#FFCDD2'; balLbl.textContent = 'مانده (بدهکار)'; }
-  else { balEl.style.color = '#FFFFFF'; balLbl.textContent = 'مانده'; }
-
-  var recent = transactions.slice(-5).reverse();
-  var hList = get('homeList');
-  if (recent.length === 0) {
-    hList.innerHTML = '<div class="empty">هنوز تراکنشی ثبت نشده است</div>';
-    return;
-  }
-  var html = '';
-  for (var k = 0; k < recent.length; k++) {
-    var t = recent[k];
-    var person = people.find(function(p) { return p.id === t.personId; });
-    var pName = person ? person.name : 'ناشناس';
-    var sign = t.type === 'debit' ? '↓' : '↑';
-    var bgColor = t.type === 'debit' ? '#2E7D32' : '#C62828';
-    html += '<div class="card" onclick="openPersonDetail(' + t.personId + ')">' +
-      '<div class="avatar" style="background:' + bgColor + '">' + sign + '</div>' +
-      '<div class="card-body">' +
-      '<div class="card-name">' + pName + '</div>' +
-      '<div class="card-sub">' + t.date + '</div>' +
-      '</div>' +
-      '<div class="card-amount ' + t.type + '">' + fmt(t.amount) + '</div>' +
-      '</div>';
-  }
-  hList.innerHTML = html;
-}
-
 // ==========================================
-// ثبت شخص و تراکنش
+// مودال اشخاص (افزودن/ویرایش)
 // ==========================================
-function openAddPersonModal() { get('newPersonName').value = ''; get('addPersonModal').classList.add('show'); }
-function closeAddPersonModal() { get('addPersonModal').classList.remove('show'); }
+function openAddPersonModal() {
+  editingPersonId = null;
+  get('personModalTitle').textContent = 'افزودن شخص جدید';
+  get('personNameInput').value = '';
+  get('personModal').classList.add('show');
+}
+function openEditPersonModal(id) {
+  var p = people.find(function(x){ return x.id === id; });
+  if(!p) return;
+  editingPersonId = id;
+  get('personModalTitle').textContent = 'ویرایش شخص';
+  get('personNameInput').value = p.name;
+  get('personModal').classList.add('show');
+}
+function closePersonModal() { get('personModal').classList.remove('show'); }
 
 function savePerson() {
-  var name = get('newPersonName').value.trim();
+  var name = get('personNameInput').value.trim();
   if (!name) { toast('نام را وارد کنید'); return; }
-  var exists = people.find(function(p) { return p.name === name; });
-  if (exists) { toast('این شخص قبلاً ثبت شده است'); return; }
-  people.push({ id: Date.now(), name: name });
+  
+  if (editingPersonId) {
+    var p = people.find(function(x){ return x.id === editingPersonId; });
+    if(p) p.name = name;
+    toast('ویرایش شد');
+  } else {
+    var exists = people.find(function(p) { return p.name === name; });
+    if (exists) { toast('این شخص قبلاً ثبت شده است'); return; }
+    people.push({ id: Date.now(), name: name });
+    toast('شخص جدید ثبت شد');
+  }
+  
   saveData();
-  closeAddPersonModal();
+  closePersonModal();
   renderPeopleList();
-  toast('شخص ثبت شد');
+  renderHome();
+}
+
+function deletePerson(id) {
+  var p = people.find(function(x){ return x.id === id; });
+  if(!p) return;
+  if(confirm('آیا از حذف "' + p.name + '" و تمام تراکنش‌های مربوط به آن مطمئن هستید؟')) {
+    people = people.filter(function(x){ return x.id !== id; });
+    transactions = transactions.filter(function(x){ return x.personId !== id; });
+    saveData();
+    renderPeopleList();
+    renderHome();
+    renderHistory();
+    toast('شخص و تراکنش‌هایش حذف شد');
+  }
+}
+
+// ==========================================
+// مودال تراکنش (از خانه یا شخص)
+// ==========================================
+var txIsQuickAdd = false; 
+function openQuickAdd(type) {
+  if (people.length === 0) { toast('ابتدا یک شخص تعریف کنید'); switchTab('peopleScreen', document.querySelectorAll('.bottom-nav button')[3]); return; }
+  txIsQuickAdd = true;
+  get('txPersonSelectContainer').style.display = 'block';
+  
+  // پر کردن لیست کشویی اشخاص
+  var sel = get('txPersonSelect');
+  sel.innerHTML = '';
+  for (var i = 0; i < people.length; i++) {
+    sel.innerHTML += '<option value="' + people[i].id + '">' + people[i].name + '</option>';
+  }
+
+  get('txModalTitle').textContent = (type === 'debit') ? 'ثبت بدهی (طلب من)' : 'ثبت طلب (بدهی من)';
+  setTxType(type, document.querySelector('.type-toggle button[data-type="' + type + '"]'));
+  
+  get('txAmount').value = ''; get('txNote').value = '';
+  fillDateSelectors('txYear', 'txMonth', 'txDay', false, null);
+  get('transactionModal').classList.add('show');
 }
 
 function openAddTransactionModal() {
-  var person = people.find(function(p) { return p.id === currentSelectedPersonId; });
-  if(person) get('txModalTitle').textContent = 'تراکنش برای: ' + person.name;
+  txIsQuickAdd = false;
+  get('txPersonSelectContainer').style.display = 'none';
   
-  get('txAmount').value = ''; get('txNote').value = ''; get('txCategory').value = 'قرض';
-  setType('debit', document.querySelector('.type-toggle button[data-type="debit"]'));
-  fillDateSelectors();
-  get('addTransactionModal').classList.add('show');
+  var person = people.find(function(p) { return p.id === currentSelectedPersonId; });
+  get('txModalTitle').textContent = 'تراکنش برای: ' + (person ? person.name : '');
+  
+  get('txAmount').value = ''; get('txNote').value = '';
+  setTxType('debit', document.querySelector('.type-toggle button[data-type="debit"]'));
+  fillDateSelectors('txYear', 'txMonth', 'txDay', false, null);
+  get('transactionModal').classList.add('show');
 }
 
-function closeAddTransactionModal() { get('addTransactionModal').classList.remove('show'); }
+function closeTransactionModal() { get('transactionModal').classList.remove('show'); }
 
-function setType(t, btn) {
-  currentType = t;
-  var btns = document.querySelectorAll('.type-toggle button');
+function setTxType(t, btn) {
+  currentTxType = t;
+  var btns = document.querySelectorAll('#txTypeToggle button');
   for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
   if (btn) { btn.classList.add('active'); }
 }
@@ -470,31 +710,121 @@ function setType(t, btn) {
 function saveTransaction() {
   var amountStr = get('txAmount').value.replace(/,/g, '');
   var amount = parseFloat(amountStr);
-  var category = get('txCategory').value;
-  var note = get('txNote').value.trim();
-  var y = get('txYear').value, m = get('txMonth').value, d = get('txDay').value;
-
   if (!amount || amount <= 0) { toast('مبلغ معتبر وارد کنید'); return; }
 
+  var targetPersonId = txIsQuickAdd ? +get('txPersonSelect').value : currentSelectedPersonId;
+  if (!targetPersonId) { toast('شخص را انتخاب کنید'); return; }
+
+  var now = new Date();
+  var timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
   transactions.push({
-    id: Date.now(), personId: currentSelectedPersonId, type: currentType,
-    amount: amount, category: category, note: note,
-    date: y + '/' + String(m).padStart(2,'0') + '/' + String(d).padStart(2,'0')
+    id: Date.now(),
+    personId: targetPersonId,
+    type: currentTxType,
+    amount: amount,
+    category: get('txCategory').value,
+    note: get('txNote').value.trim(),
+    date: get('txYear').value + '/' + String(get('txMonth').value).padStart(2,'0') + '/' + String(get('txDay').value).padStart(2,'0'),
+    time: timeStr
   });
 
   saveData();
-  closeAddTransactionModal();
+  closeTransactionModal();
   
-  // آپدیت کردن همه صفحات
-  openPersonDetail(currentSelectedPersonId); 
-  renderPeopleList(); 
-  renderHome(); 
+  if (!txIsQuickAdd && currentSelectedPersonId) openPersonDetail(currentSelectedPersonId); 
+  renderHome(); renderHistory(); renderPeopleList();
   toast('تراکنش ثبت شد');
 }
 
 // ==========================================
-// تم، پشتیبان‌گیری و غیره
+// گزارش‌گیری
 // ==========================================
+function setReportType(type, btn) {
+  currentReportType = type;
+  var btns = document.querySelectorAll('.report-btn');
+  for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+  if(btn) btn.classList.add('active');
+
+  get('customDateContainer').style.display = (type === 'custom') ? 'block' : 'none';
+  
+  if (type === 'custom') {
+    fillDateSelectors('repStartY', 'repStartM', 'repStartD', false, null);
+    fillDateSelectors('repEndY', 'repEndM', 'repEndD', false, null);
+    get('reportResult').innerHTML = '<div class="empty">تاریخ را انتخاب و دکمه نمایش را بزنید.</div>';
+    return;
+  }
+
+  var t = getTodayJalali();
+  var todayStr = t.jy + '/' + String(t.jm).padStart(2,'0') + '/' + String(t.jd).padStart(2,'0');
+  var filtered = [];
+
+  for (var i = 0; i < transactions.length; i++) {
+    var tx = transactions[i];
+    if (type === 'daily' && tx.date === todayStr) filtered.push(tx);
+    else if (type === 'monthly' && tx.date.split('/')[1] === String(t.jm).padStart(2,'0') && tx.date.split('/')[0] === String(t.jy)) filtered.push(tx);
+    else if (type === 'yearly' && tx.date.split('/')[0] === String(t.jy)) filtered.push(tx);
+  }
+  displayReportResult(filtered, type);
+}
+
+function calculateCustomReport() {
+  var start = get('repStartY').value + '/' + String(get('repStartM').value).padStart(2,'0') + '/' + String(get('repStartD').value).padStart(2,'0');
+  var end = get('repEndY').value + '/' + String(get('repEndM').value).padStart(2,'0') + '/' + String(get('repEndD').value).padStart(2,'0');
+  
+  var filtered = transactions.filter(function(tx) {
+    return tx.date >= start && tx.date <= end;
+  });
+  displayReportResult(filtered, 'بازه ' + start + ' تا ' + end);
+}
+
+function displayReportResult(list, title) {
+  var td = 0, tc = 0;
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].type === 'debit') td += list[i].amount;
+    else tc += list[i].amount;
+  }
+  var bal = td - tc;
+  var el = get('reportResult');
+  
+  el.innerHTML = '<h3>' + (title === 'daily' ? 'گزارش امروز' : (title === 'monthly' ? 'گزارش این ماه' : (title === 'yearly' ? 'گزارش این سال' : title))) + '</h3>' +
+    '<div class="report-stat"><span>تعداد تراکنش:</span><span>' + list.length + ' مورد</span></div>' +
+    '<div class="report-stat"><span>مجموع طلب (بدهکار):</span><span style="color:var(--green);font-weight:700;">' + fmt(td) + '</span></div>' +
+    '<div class="report-stat"><span>مجموع بدهی (بستانکار):</span><span style="color:var(--red);font-weight:700;">' + fmt(tc) + '</span></div>' +
+    '<div class="report-stat" style="border-top:1px solid var(--border); padding-top:8px; margin-top:8px;"><span>تفاضل:</span><span style="color:' + (bal >= 0 ? 'var(--green)' : 'var(--red)') + ';font-weight:700;">' + fmt(Math.abs(bal)) + '</span></div>';
+}
+
+// ==========================================
+// تنظیمات (فونت، تم، بکاپ)
+// ==========================================
+function setFontSize(size, btn) {
+  currentFontSize = size;
+  var btns = document.querySelectorAll('.font-size-btn');
+  for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+  if(btn) btn.classList.add('active');
+
+  var zoom = '1';
+  if(size === 'small') zoom = '0.9';
+  else if(size === 'large') zoom = '1.15';
+  document.body.style.zoom = zoom;
+  saveData();
+  toast('اندازه فونت تغییر کرد');
+}
+
+function applyFontSize() {
+  var btns = document.querySelectorAll('.font-size-btn');
+  for(var i=0; i<btns.length; i++) {
+    btns[i].classList.remove('active');
+    if(btns[i].textContent === 'کوچک' && currentFontSize === 'small') btns[i].classList.add('active');
+    else if(btns[i].textContent === 'متوسط' && currentFontSize === 'medium') btns[i].classList.add('active');
+    else if(btns[i].textContent === 'بزرگ' && currentFontSize === 'large') btns[i].classList.add('active');
+  }
+  var zoom = '1';
+  if(currentFontSize === 'small') zoom = '0.9';
+  else if(currentFontSize === 'large') zoom = '1.15';
+  document.body.style.zoom = zoom;
+}
+
 function toggleTheme() {
   var html = document.documentElement;
   if (html.getAttribute('data-theme') === 'light') { html.setAttribute('data-theme', 'dark'); get('themeStatus').textContent = 'تاریک'; }
@@ -503,7 +833,7 @@ function toggleTheme() {
 
 function backupData() {
   if (!window.AndroidBridge || !window.AndroidBridge.exportBackup) { toast('خطا: پل ارتباطی پیدا نشد'); return; }
-  var data = JSON.stringify({ people: people, transactions: transactions });
+  var data = JSON.stringify({ people: people, transactions: transactions, fontSize: currentFontSize });
   window.AndroidBridge.exportBackup("1", 'hesab_ketab_backup.json', data);
   toast('در حال ذخیره...');
 }
@@ -520,7 +850,8 @@ window.onImportResult = function(id, content, error) {
     var data = JSON.parse(content);
     if (data.people && data.transactions) {
       people = data.people; transactions = data.transactions;
-      saveData(); renderPeopleList(); renderHome(); toast('بازیابی انجام شد');
+      if(data.fontSize) currentFontSize = data.fontSize;
+      saveData(); applyFontSize(); renderPeopleList(); renderHome(); renderHistory(); toast('بازیابی انجام شد');
     } else { toast('فایل نامعتبر است'); }
   } catch(e) { toast('فایل نامعتبر است'); }
 };
@@ -534,8 +865,9 @@ get('txAmount').addEventListener('input', function(e) {
 // شروع
 // ==========================================
 loadData();
-renderPeopleList();
+applyFontSize();
 renderHome();
+renderPeopleList();
 </script>
 </body>
 </html>
