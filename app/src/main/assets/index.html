@@ -26,7 +26,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .stat.credit .value{color:#FFCDD2}
 .balance{margin-top:10px;padding:10px 14px;background:rgba(255,255,255,0.18);border-radius:12px;display:flex;justify-content:space-between;align-items:center}
 .balance .label{font-size:13px}
-.balance .value{font-size:18px;font-weight:700}
+.balance .value{font-size:18px;font-weight:700;transition:color 0.3s}
 .page-header{background:var(--surface);padding:16px;border-bottom:1px solid var(--border)}
 .page-header h1{font-size:18px;font-weight:700}
 .list{padding:12px;display:flex;flex-direction:column;gap:8px}
@@ -86,7 +86,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
           <div class="stat debit"><div class="label">طلب من</div><div class="value" id="totalDebit">0</div></div>
           <div class="stat credit"><div class="label">بدهی من</div><div class="value" id="totalCredit">0</div></div>
         </div>
-        <div class="balance"><span class="label">مانده</span><span class="value" id="balanceValue">0</span></div>
+        <div class="balance"><span class="label" id="balanceLabel">مانده</span><span class="value" id="balanceValue">0</span></div>
       </div>
       <div class="section-title">آخرین تراکنش‌ها</div>
       <div class="list" id="homeList"></div>
@@ -106,6 +106,17 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
         <div class="setting-item" onclick="toggleTheme()">
           <div class="setting-info"><div class="setting-label">تم برنامه</div><div class="setting-sub" id="themeStatus">روشن</div></div>
           <div style="font-size:22px;">🎨</div>
+        </div>
+      </div>
+      <div class="settings-group">
+        <h3>داده‌ها</h3>
+        <div class="setting-item" onclick="backupData()">
+          <div class="setting-info"><div class="setting-label">💾 پشتیبان‌گیری</div><div class="setting-sub">ذخیره اطلاعات در فایل</div></div>
+          <div style="color:var(--primary);">›</div>
+        </div>
+        <div class="setting-item" onclick="restoreData()">
+          <div class="setting-info"><div class="setting-label">📂 بازیابی</div><div class="setting-sub">بازیابی از فایل پشتیبان</div></div>
+          <div style="color:var(--primary);">›</div>
         </div>
       </div>
     </div>
@@ -163,6 +174,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 var entries = [];
 var currentType = 'debit';
 var monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+var STORAGE_KEY = 'hesab_ketab_data_v1';
 
 // ==========================================
 // ابزارهای کمکی
@@ -172,6 +184,24 @@ function fmt(num) { return Number(num).toLocaleString('en-US'); }
 function toast(msg) {
   var t = get('toast');
   if(t) { t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2000); }
+}
+
+// ==========================================
+// ذخیره و بازیابی خودکار (LocalStorage)
+// ==========================================
+function saveToStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  } catch(e) {}
+}
+
+function loadFromStorage() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      entries = JSON.parse(raw) || [];
+    }
+  } catch(e) { entries = []; }
 }
 
 // ==========================================
@@ -278,7 +308,23 @@ function renderAll() {
   
   get('totalDebit').textContent = fmt(td);
   get('totalCredit').textContent = fmt(tc);
-  get('balanceValue').textContent = fmt(Math.abs(td - tc));
+
+  // منطق رنگ مانده
+  var bal = td - tc;
+  var balEl = get('balanceValue');
+  var balLbl = get('balanceLabel');
+  balEl.textContent = fmt(Math.abs(bal));
+
+  if (bal > 0) {
+    balEl.style.color = '#B9F6CA'; // سبز
+    balLbl.textContent = 'مانده (طلبکار)';
+  } else if (bal < 0) {
+    balEl.style.color = '#FFCDD2'; // قرمز
+    balLbl.textContent = 'مانده (بدهکار)';
+  } else {
+    balEl.style.color = '#FFFFFF'; // سفید
+    balLbl.textContent = 'مانده';
+  }
 
   var hList = get('homeList');
   var hiList = get('historyList');
@@ -290,13 +336,11 @@ function renderAll() {
     return;
   }
 
-  // 5 مورد آخر برای خانه
   var recent = entries.slice(-5).reverse();
   html = '';
   for (var k = 0; k < recent.length; k++) { html += createCard(recent[k]); }
   hList.innerHTML = html;
 
-  // کل لیست برای تاریخچه
   var all = entries.slice().reverse();
   html = '';
   for (var m = 0; m < all.length; m++) { html += createCard(all[m]); }
@@ -368,10 +412,58 @@ function saveEntry() {
     date: dateStr
   });
 
+  saveToStorage(); // ذخیره دائمی
   closeAddDialog();
   renderAll();
   toast('ثبت شد');
 }
+
+// ==========================================
+// پشتیبان‌گیری و بازیابی (با Bridge اندروید)
+// ==========================================
+function backupData() {
+  if (!window.AndroidBridge || !window.AndroidBridge.exportBackup) {
+    toast('خطا: پل ارتباطی پیدا نشد');
+    return;
+  }
+  var data = JSON.stringify(entries);
+  var filename = 'hesab_ketab_backup.json';
+  window.AndroidBridge.exportBackup("1", filename, data);
+  toast('در حال ذخیره...');
+}
+
+window.onExportResult = function(id, success) {
+  toast(success ? 'پشتیبان ذخیره شد' : 'ذخیره لغو شد');
+};
+
+function restoreData() {
+  if (!window.AndroidBridge || !window.AndroidBridge.importBackup) {
+    toast('خطا: پل ارتباطی پیدا نشد');
+    return;
+  }
+  window.AndroidBridge.importBackup("1");
+  toast('در حال باز کردن فایل...');
+}
+
+window.onImportResult = function(id, content, error) {
+  if (error || !content) {
+    if (error !== 'cancelled') toast('خطا در بازیابی');
+    return;
+  }
+  try {
+    var data = JSON.parse(content);
+    if (Array.isArray(data)) {
+      entries = data;
+      saveToStorage();
+      renderAll();
+      toast('بازیابی با موفقیت انجام شد');
+    } else {
+      toast('فایل نامعتبر است');
+    }
+  } catch(e) {
+    toast('فایل نامعتبر است');
+  }
+};
 
 // ==========================================
 // فرمت خودکار مبلغ (کاما)
@@ -384,6 +476,7 @@ get('inputAmount').addEventListener('input', function(e) {
 // ==========================================
 // شروع برنامه
 // ==========================================
+loadFromStorage(); // لود اطلاعات قبلی
 renderAll();
 </script>
 </body>
