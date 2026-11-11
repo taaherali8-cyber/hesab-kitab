@@ -70,6 +70,11 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .setting-item .setting-sub{font-size:12px;color:var(--text2);margin-top:2px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;z-index:2000;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .toast.show{opacity:1}
+
+/* استایل جدید برای اسم‌های قبلی */
+.name-chips-container { display: flex; overflow-x: auto; gap: 8px; margin-top: 10px; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
+.name-chip { background: var(--primary-light); color: var(--primary); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid var(--primary); transition: background 0.2s; }
+.name-chip:active { background: var(--primary); color: #fff; }
 </style>
 </head>
 <body>
@@ -139,7 +144,14 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
       <button data-type="debit" class="active" onclick="setType('debit', this)">بدهکار (طلب من)</button>
       <button data-type="credit" onclick="setType('credit', this)">بستانکار (بدهی من)</button>
     </div>
-    <div class="field"><label>نام شخص</label><input type="text" id="inputName" placeholder="مثلاً علی"></div>
+    
+    <div class="field">
+      <label>نام شخص</label>
+      <input type="text" id="inputName" placeholder="تایپ کنید یا از لیست زیر انتخاب کنید..." list="nameSuggestions">
+      <datalist id="nameSuggestions"></datalist>
+      <div class="name-chips-container" id="recentNamesContainer"></div>
+    </div>
+
     <div class="field"><label>مبلغ</label><input type="text" id="inputAmount" placeholder="50,000" inputmode="numeric" dir="ltr"></div>
     <div class="field"><label>دسته‌بندی</label>
       <select id="inputCategory">
@@ -175,6 +187,7 @@ var entries = [];
 var currentType = 'debit';
 var monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 var STORAGE_KEY = 'hesab_ketab_data_v1';
+var uniqueNames = []; // ذخیره اسم‌های یکتا برای انتخاب سریع
 
 // ==========================================
 // ابزارهای کمکی
@@ -202,6 +215,50 @@ function loadFromStorage() {
       entries = JSON.parse(raw) || [];
     }
   } catch(e) { entries = []; }
+}
+
+// ==========================================
+// استخراج اسم‌های یکتا برای پیشنهاد
+// ==========================================
+function extractUniqueNames() {
+  uniqueNames = [];
+  for (var i = 0; i < entries.length; i++) {
+    if (uniqueNames.indexOf(entries[i].name) === -1) {
+      uniqueNames.push(entries[i].name);
+    }
+  }
+}
+
+function updateNameSuggestions() {
+  extractUniqueNames();
+  
+  // 1. آپدیت کردن datalist (پیشنهاد کیبورد)
+  var datalist = get('nameSuggestions');
+  var html = '';
+  for (var i = 0; i < uniqueNames.length; i++) {
+    html += '<option value="' + uniqueNames[i] + '">';
+  }
+  datalist.innerHTML = html;
+
+  // 2. آپدیت کردن دکمه‌های شناور (Chips)
+  var container = get('recentNamesContainer');
+  if (uniqueNames.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  html = '';
+  for (var j = 0; j < uniqueNames.length; j++) {
+    // از data-index استفاده می‌کنیم تا مشکل کاراکترهای خاص در اسم پیش نیاید
+    html += '<div class="name-chip" data-index="' + j + '" onclick="selectNameByIndex(this)">' + uniqueNames[j] + '</div>';
+  }
+  container.innerHTML = html;
+}
+
+// وقتی روی یک دکمه اسم کلیک می‌شود
+function selectNameByIndex(el) {
+  var index = el.getAttribute('data-index');
+  get('inputName').value = uniqueNames[index];
 }
 
 // ==========================================
@@ -373,6 +430,10 @@ function openAddDialog() {
   get('inputCategory').value = 'قرض';
   setType('debit', document.querySelector('.type-toggle button[data-type="debit"]'));
   fillDateSelectors();
+  
+  // آپدیت کردن لیست اسم‌های پیشنهادی هر بار که مودال باز می‌شود
+  updateNameSuggestions();
+  
   get('addModal').classList.add('show');
 }
 
@@ -412,7 +473,7 @@ function saveEntry() {
     date: dateStr
   });
 
-  saveToStorage(); // ذخیره دائمی
+  saveToStorage();
   closeAddDialog();
   renderAll();
   toast('ثبت شد');
@@ -476,7 +537,7 @@ get('inputAmount').addEventListener('input', function(e) {
 // ==========================================
 // شروع برنامه
 // ==========================================
-loadFromStorage(); // لود اطلاعات قبلی
+loadFromStorage();
 renderAll();
 </script>
 </body>
