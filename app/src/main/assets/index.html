@@ -1,76 +1,296 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>تست</title>
+<title>حساب و کتاب</title>
+<style>
+:root[data-theme="light"]{--primary:#00897B;--primary-dark:#00695C;--bg:#F5F5F5;--surface:#FFF;--text:#212121;--text2:#757575;--border:#E0E0E0;--input-bg:#FAFAFA;--shadow:0 2px 8px rgba(0,0,0,0.08);--green:#2E7D32;--green-bg:#E8F5E9;--red:#C62828;--red-bg:#FFEBEE;--nav-shadow:0 -2px 8px rgba(0,0,0,0.06)}
+:root[data-theme="dark"]{--primary:#26A69A;--primary-dark:#00897B;--bg:#121212;--surface:#1E1E1E;--text:#E0E0E0;--text2:#9E9E9E;--border:#333;--input-bg:#2A2A2A;--shadow:0 2px 8px rgba(0,0,0,0.4);--green:#66BB6A;--green-bg:#1B2E1F;--red:#EF5350;--red-bg:#2E1B1B;--nav-shadow:0 -2px 8px rgba(0,0,0,0.3)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.screen{display:none;padding-bottom:20px}
+.screen.active{display:block}
+.hidden{display:none !important}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:20px 16px 24px;border-radius:0 0 24px 24px;box-shadow:var(--shadow)}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.header h1{font-size:20px;font-weight:700}
+.eye-btn{background:rgba(255,255,255,0.2);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:18px;cursor:pointer}
+.stats{display:flex;gap:10px}
+.stat{flex:1;background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px}
+.stat .label{font-size:11px;opacity:0.9;margin-bottom:4px}
+.stat .value{font-size:17px;font-weight:700}
+.stat.debit .value{color:#B9F6CA}
+.stat.credit .value{color:#FFCDD2}
+.balance{margin-top:10px;padding:10px 14px;background:rgba(255,255,255,0.18);border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+.balance .label{font-size:13px}
+.balance .value{font-size:18px;font-weight:700}
+.page-header{background:var(--surface);padding:16px;border-bottom:1px solid var(--border)}
+.page-header h1{font-size:18px;font-weight:700}
+.list{padding:12px;display:flex;flex-direction:column;gap:8px}
+.section-title{font-size:13px;color:var(--text2);font-weight:700;padding:8px 14px 4px}
+.empty{text-align:center;padding:60px 20px;color:var(--text2);font-size:14px}
+.card{background:var(--surface);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;position:relative}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;color:#fff;background:#5C6BC0}
+.card-body{flex:1;min-width:0}
+.card-name{font-size:15px;font-weight:600;margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--text2)}
+.card-amount{font-size:15px;font-weight:700;flex-shrink:0}
+.card-amount.debit{color:var(--green)}
+.card-amount.credit{color:var(--red)}
+.fab{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:20px;background:var(--primary);color:#fff;border:none;width:56px;height:56px;border-radius:18px;font-size:28px;box-shadow:0 6px 16px rgba(0,137,123,0.4);cursor:pointer;z-index:50}
+.bottom-nav{display:flex;background:var(--surface);border-top:1px solid var(--border);box-shadow:var(--nav-shadow);padding:6px 0 env(safe-area-inset-bottom,6px)}
+.bottom-nav button{flex:1;background:none;border:none;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text2);font-family:inherit;font-size:11px;cursor:pointer}
+.bottom-nav button.active{color:var(--primary);font-weight:700}
+.bottom-nav button .icon{font-size:22px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;z-index:100}
+.modal-overlay.show{display:flex}
+.modal{background:var(--surface);border-radius:22px 22px 0 0;width:100%;max-width:500px;padding:20px 16px;max-height:90vh;overflow-y:auto}
+.modal h2{font-size:17px;margin-bottom:16px;text-align:center}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600}
+.field input,.field select{width:100%;padding:12px;font-family:inherit;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:var(--input-bg);color:var(--text);outline:none}
+.type-toggle{display:flex;gap:8px;margin-bottom:14px}
+.type-toggle button{flex:1;padding:10px;border:1.5px solid var(--border);background:var(--surface);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--text2)}
+.type-toggle button.active[data-type="debit"]{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.type-toggle button.active[data-type="credit"]{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.modal-actions button{flex:1;padding:13px;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.btn-cancel{background:var(--border);color:var(--text)}
+.btn-save{background:var(--primary);color:#fff}
+.settings-group{padding:8px 12px}
+.settings-group h3{font-size:12px;color:var(--text2);font-weight:700;padding:8px 6px 6px}
+.setting-item{background:var(--surface);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer}
+.setting-item .setting-label{font-size:14px;font-weight:600}
+.setting-item .setting-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.switch{width:44px;height:24px;border-radius:12px;background:var(--border);position:relative;transition:background 0.2s;flex-shrink:0}
+.switch.on{background:var(--primary)}
+.switch::after{content:'';position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform 0.2s}
+.switch.on::after{transform:translateX(-20px)}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;z-index:2000;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.toast.show{opacity:1}
+</style>
 </head>
-<body style="font-family:Tahoma;padding:20px;background:#f5f5f5;">
+<body>
 
-<div style="background:#d32f2f;color:#fff;padding:15px;border-radius:10px;font-size:18px;text-align:center;font-weight:bold;">
-نسخهٔ تست — v2.0
+<div class="app" id="app">
+  <div class="content" id="content">
+    <!-- صفحه خانه -->
+    <div class="screen active" id="homeScreen">
+      <div class="header">
+        <div class="header-top">
+          <h1>حساب و کتاب</h1>
+        </div>
+        <div class="stats">
+          <div class="stat debit"><div class="label">طلب من</div><div class="value" id="totalDebit">0</div></div>
+          <div class="stat credit"><div class="label">بدهی من</div><div class="value" id="totalCredit">0</div></div>
+        </div>
+        <div class="balance"><span class="label">مانده</span><span class="value" id="balanceValue">0</span></div>
+      </div>
+      <div class="section-title">آخرین تراکنش‌ها</div>
+      <div class="list" id="homeList"></div>
+    </div>
+
+    <!-- صفحه تاریخچه -->
+    <div class="screen" id="historyScreen">
+      <div class="page-header"><h1>تاریخچه</h1></div>
+      <div class="list" id="historyList"></div>
+    </div>
+
+    <!-- صفحه تنظیمات -->
+    <div class="screen" id="settingsScreen">
+      <div class="page-header"><h1>تنظیمات</h1></div>
+      <div class="settings-group">
+        <h3>ظاهر</h3>
+        <div class="setting-item" onclick="toggleTheme()">
+          <div class="setting-info"><div class="setting-label">تم برنامه</div><div class="setting-sub" id="themeStatus">روشن</div></div>
+          <div style="font-size:22px;">🎨</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="fab" id="fabBtn" onclick="openAddDialog()">＋</button>
+
+  <nav class="bottom-nav">
+    <button class="active" onclick="switchTab('homeScreen', this)"><span class="icon">🏠</span><span>خانه</span></button>
+    <button onclick="switchTab('historyScreen', this)"><span class="icon">📜</span><span>تاریخچه</span></button>
+    <button onclick="switchTab('settingsScreen', this)"><span class="icon">⚙️</span><span>تنظیمات</span></button>
+  </nav>
 </div>
 
-<div id="status" style="background:#ff9800;color:#fff;padding:15px;border-radius:10px;margin:15px 0;font-size:18px;text-align:center;font-weight:bold;">
-JS: در حال اجرا نشده
+<!-- مودال ثبت جدید -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2>ثبت جدید</h2>
+    <div class="type-toggle">
+      <button data-type="debit" class="active" onclick="setType('debit', this)">بدهکار (طلب من)</button>
+      <button data-type="credit" onclick="setType('credit', this)">بستانکار (بدهی من)</button>
+    </div>
+    <div class="field"><label>نام شخص</label><input type="text" id="inputName" placeholder="مثلاً علی"></div>
+    <div class="field"><label>مبلغ</label><input type="text" id="inputAmount" placeholder="50,000" inputmode="numeric" dir="ltr"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddDialog()">انصراف</button>
+      <button class="btn-save" onclick="saveEntry()">ذخیره</button>
+    </div>
+  </div>
 </div>
 
-<button onclick="testClick()" style="width:100%;padding:25px;font-size:22px;background:#00897b;color:#fff;border:none;border-radius:12px;font-weight:bold;cursor:pointer;">
-دکمهٔ تست
-</button>
-
-<div id="clicks" style="margin-top:15px;padding:15px;background:#fff;border-radius:10px;font-size:16px;text-align:center;">
-تعداد کلیک: 0
-</div>
-
-<div id="info" style="margin-top:15px;padding:15px;background:#fff;border-radius:10px;font-size:13px;text-align:center;color:#666;">
-اطلاعات سیستم اینجا نمایش داده می‌شود
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
-var clickCount = 0;
+// ==========================================
+// متغیرهای اصلی
+// ==========================================
+var entries = [];
+var currentType = 'debit';
 
-// این خطوط اگر اجرا شوند، رنگ سبز می‌شود
-document.getElementById('status').textContent = 'JS: اجرا شد ✓';
-document.getElementById('status').style.background = '#388e3c';
-
-// اطلاعات سیستم
-var info = 'AndroidBridge: ';
-try {
-  info += (window.AndroidBridge ? 'دارد ✓' : 'ندارد');
-} catch (e) {
-  info += 'خطا: ' + e.message;
-}
-info += '\nlocalStorage: ';
-try {
-  localStorage.setItem('test', '1');
-  localStorage.removeItem('test');
-  info += 'کار می‌کند ✓';
-} catch (e) {
-  info += 'خطا: ' + e.message;
-}
-info += '\nProtocol: ' + window.location.protocol;
-info += '\nUserAgent: ' + (navigator.userAgent || '?').substring(0, 60);
-document.getElementById('info').textContent = info;
-document.getElementById('info').style.whiteSpace = 'pre-wrap';
-document.getElementById('info').style.textAlign = 'left';
-document.getElementById('info').style.direction = 'ltr';
-
-// تابع کلیک
-function testClick() {
-  clickCount++;
-  document.getElementById('clicks').textContent = 'تعداد کلیک: ' + clickCount;
-  document.getElementById('clicks').style.background = '#c8e6c9';
+// ==========================================
+// ابزارهای کمکی
+// ==========================================
+function get(id) { return document.getElementById(id); }
+function fmt(num) { return Number(num).toLocaleString('en-US'); }
+function toast(msg) {
+  var t = get('toast');
+  if(t) { t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2000); }
 }
 
-// خطاها رو نشون بده
-window.onerror = function(m, u, l) {
-  var st = document.getElementById('status');
-  st.textContent = 'خطا: ' + m + ' در خط ' + l;
-  st.style.background = '#d32f2f';
-  return true;
-};
+// ==========================================
+// ناوبری بین صفحات
+// ==========================================
+function switchTab(screenId, btn) {
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) { screens[i].classList.remove('active'); }
+  
+  var target = get(screenId);
+  if (target) { target.classList.add('active'); }
+  
+  var btns = document.querySelectorAll('.bottom-nav button');
+  for (var j = 0; j < btns.length; j++) { btns[j].classList.remove('active'); }
+  if (btn) { btn.classList.add('active'); }
+  
+  var fab = get('fabBtn');
+  if (fab) { fab.style.display = (screenId === 'settingsScreen') ? 'none' : 'block'; }
+}
+
+// ==========================================
+// تم
+// ==========================================
+function toggleTheme() {
+  var html = document.documentElement;
+  if (html.getAttribute('data-theme') === 'light') {
+    html.setAttribute('data-theme', 'dark');
+    get('themeStatus').textContent = 'تاریک';
+  } else {
+    html.setAttribute('data-theme', 'light');
+    get('themeStatus').textContent = 'روشن';
+  }
+}
+
+// ==========================================
+// رندر کردن اطلاعات
+// ==========================================
+function renderAll() {
+  var td = 0, tc = 0;
+  for (var i = 0; i < entries.length; i++) {
+    if (entries[i].type === 'debit') { td += entries[i].amount; }
+    else { tc += entries[i].amount; }
+  }
+  
+  get('totalDebit').textContent = fmt(td);
+  get('totalCredit').textContent = fmt(tc);
+  get('balanceValue').textContent = fmt(Math.abs(td - tc));
+
+  var hList = get('homeList');
+  var hiList = get('historyList');
+  var html = '';
+
+  if (entries.length === 0) {
+    hList.innerHTML = '<div class="empty">هنوز چیزی ثبت نکرده‌اید</div>';
+    hiList.innerHTML = '<div class="empty">لیست خالی است</div>';
+    return;
+  }
+
+  // 5 مورد آخر برای خانه
+  var recent = entries.slice(-5).reverse();
+  html = '';
+  for (var k = 0; k < recent.length; k++) { html += createCard(recent[k]); }
+  hList.innerHTML = html;
+
+  // کل لیست برای تاریخچه
+  var all = entries.slice().reverse();
+  html = '';
+  for (var m = 0; m < all.length; m++) { html += createCard(all[m]); }
+  hiList.innerHTML = html;
+}
+
+function createCard(e) {
+  var sign = e.type === 'debit' ? '↓' : '↑';
+  return '<div class="card">' +
+    '<div class="avatar" style="background:' + (e.type === 'debit' ? '#2E7D32' : '#C62828') + '">' + sign + '</div>' +
+    '<div class="card-body">' +
+    '<div class="card-name">' + e.name + '</div>' +
+    '</div>' +
+    '<div class="card-amount ' + e.type + '">' + fmt(e.amount) + '</div>' +
+    '</div>';
+}
+
+// ==========================================
+// ثبت رکورد جدید
+// ==========================================
+function openAddDialog() {
+  get('inputName').value = '';
+  get('inputAmount').value = '';
+  setType('debit', document.querySelector('.type-toggle button[data-type="debit"]'));
+  get('addModal').classList.add('show');
+}
+
+function closeAddDialog() {
+  get('addModal').classList.remove('show');
+}
+
+function setType(t, btn) {
+  currentType = t;
+  var btns = document.querySelectorAll('.type-toggle button');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  if (btn) { btn.classList.add('active'); }
+}
+
+function saveEntry() {
+  var name = get('inputName').value.trim();
+  var amountStr = get('inputAmount').value.replace(/,/g, '');
+  var amount = parseFloat(amountStr);
+
+  if (!name) { toast('نام را وارد کنید'); return; }
+  if (!amount || amount <= 0) { toast('مبلغ معتبر وارد کنید'); return; }
+
+  entries.push({
+    id: Date.now(),
+    name: name,
+    type: currentType,
+    amount: amount
+  });
+
+  closeAddDialog();
+  renderAll();
+  toast('ثبت شد');
+}
+
+// ==========================================
+// فرمت خودکار مبلغ (کاما)
+// ==========================================
+get('inputAmount').addEventListener('input', function(e) {
+  var raw = e.target.value.replace(/[^\d]/g, '');
+  e.target.value = raw === '' ? '' : Number(raw).toLocaleString('en-US');
+});
+
+// ==========================================
+// شروع برنامه
+// ==========================================
+renderAll();
 </script>
-
 </body>
 </html>
