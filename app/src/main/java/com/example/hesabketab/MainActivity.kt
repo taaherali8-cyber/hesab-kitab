@@ -70,6 +70,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(webView)
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (::webView.isInitialized) {
+            webView.evaluateJavascript("window.onAppPause && window.onAppPause();", null)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::webView.isInitialized) {
+            webView.evaluateJavascript("window.onAppResume && window.onAppResume();", null)
+        }
+    }
+
     override fun onBackPressed() {
         if (webView.canGoBack()) webView.goBack() else super.onBackPressed()
     }
@@ -145,7 +159,7 @@ class MainActivity : AppCompatActivity() {
         val info = BiometricPrompt.PromptInfo.Builder()
             .setTitle("ورود به حساب و کتاب")
             .setSubtitle("اثر انگشت را لمس کنید")
-            .setNegativeButtonText("انصراف")
+            .setNegativeButtonText("استفاده از پین")
             .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             .build()
         prompt.authenticate(info)
