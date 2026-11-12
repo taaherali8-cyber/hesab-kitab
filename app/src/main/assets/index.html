@@ -11,7 +11,7 @@
 html,body{height:100%}
 body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent;transition:background 0.3s, color 0.3s}
 .app{display:flex;flex-direction:column;height:100vh;height:100dvh}
-.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch; padding-bottom: 20px;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
 .screen{display:none;padding-bottom:20px}
 .screen.active{display:block}
 .hidden{display:none !important}
@@ -62,12 +62,10 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .action-btn-big.debit{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
 .action-btn-big.credit{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
 
-/* Summary Section at bottom of home */
 .summary-section{margin:16px;padding:16px;background:var(--surface);border-radius:14px;box-shadow:var(--shadow)}
 .summary-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}
 .summary-row:last-child{border-bottom:none;padding-top:12px;font-weight:700;font-size:16px}
 
-/* Search Box */
 .search-box{padding:12px;background:var(--surface)}
 .search-box input{width:100%;padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--input-bg);color:var(--text);font-family:inherit;font-size:14px;outline:none}
 
@@ -91,10 +89,27 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .report-result h3{font-size:16px;margin-bottom:12px;color:var(--primary)}
 .report-stat{font-size:15px;margin:8px 0;display:flex;justify-content:space-between}
 
-/* Settings Font Size */
-.font-sizes{display:flex;gap:8px;padding:4px 12px}
-.font-size-btn{flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit}
+/* Settings - Centered Layout */
+.settings-group{padding:8px 12px}
+.settings-group h3{font-size:12px;color:var(--text2);font-weight:700;padding:12px 6px 8px;text-align:center;letter-spacing:1px}
+.setting-item{background:var(--surface);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer;gap:12px}
+.setting-item .setting-label{font-size:14px;font-weight:600}
+.setting-item .setting-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.setting-item .setting-info{flex:1;text-align:right}
+
+/* Font Size Buttons */
+.font-sizes{display:flex;gap:8px;width:100%}
+.font-size-btn{flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit;font-size:13px;font-weight:600}
 .font-size-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* Theme Mode Buttons */
+.theme-modes{display:flex;gap:8px;width:100%}
+.theme-mode-btn{flex:1;padding:12px 6px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.theme-mode-btn .emo{font-size:20px}
+.theme-mode-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* Custom date container - فیکس شده */
+#customDateContainer{padding:12px;background:var(--surface);border-radius:14px;margin:0 12px;box-shadow:var(--shadow)}
 </style>
 </head>
 <body>
@@ -142,7 +157,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
         <button class="report-btn" onclick="setReportType('custom', this)">دلخواه</button>
       </div>
       
-      <div id="customDateContainer" class="hidden" style="padding:12px; background:var(--surface); border-radius:14px; margin:0 12px;">
+      <div id="customDateContainer" class="hidden">
         <div class="field"><label>از تاریخ</label>
           <div class="date-row">
             <select id="repStartY"></select><select id="repStartM"></select><select id="repStartD"></select>
@@ -153,11 +168,11 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
             <select id="repEndY"></select><select id="repEndM"></select><select id="repEndD"></select>
           </div>
         </div>
-        <button class="btn-save" style="width:100%;padding:12px;border-radius:10px;border:none;font-family:inherit;font-weight:700;" onclick="calculateCustomReport()">نمایش گزارش</button>
+        <button style="width:100%;padding:12px;border-radius:10px;border:none;font-family:inherit;font-weight:700;background:var(--primary);color:#fff;cursor:pointer;" onclick="calculateCustomReport()">نمایش گزارش</button>
       </div>
 
       <div class="report-result" id="reportResult">
-        <!-- نتایج اینجا نمایش داده می‌شود -->
+        <div class="empty">دسته‌بندی مورد نظر را انتخاب کنید</div>
       </div>
     </div>
 
@@ -179,13 +194,17 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
       
       <div class="settings-group">
         <h3>ظاهر</h3>
-        <div class="setting-item" onclick="toggleTheme()">
-          <div class="setting-info"><div class="setting-label">تم برنامه</div><div class="setting-sub" id="themeStatus">روشن</div></div>
-          <div style="font-size:22px;">🎨</div>
+        <div class="setting-item" style="flex-direction:column;align-items:stretch;">
+          <div class="setting-label" style="margin-bottom:10px;text-align:center;">تم برنامه</div>
+          <div class="theme-modes">
+            <button class="theme-mode-btn" data-mode="light" onclick="setThemeMode('light', this)"><span class="emo">☀️</span><span>روشن</span></button>
+            <button class="theme-mode-btn" data-mode="dark" onclick="setThemeMode('dark', this)"><span class="emo">🌙</span><span>تاریک</span></button>
+            <button class="theme-mode-btn" data-mode="auto" onclick="setThemeMode('auto', this)"><span class="emo">📱</span><span>خودکار</span></button>
+          </div>
         </div>
-        <div class="setting-item" style="flex-direction:column;align-items:flex-start;cursor:default;">
-          <div class="setting-label" style="margin-bottom:8px;">اندازه فونت</div>
-          <div class="font-sizes" style="width:100%;padding:0;">
+        <div class="setting-item" style="flex-direction:column;align-items:stretch;cursor:default;">
+          <div class="setting-label" style="margin-bottom:10px;text-align:center;">اندازه فونت</div>
+          <div class="font-sizes">
             <button class="font-size-btn" onclick="setFontSize('small', this)">کوچک</button>
             <button class="font-size-btn active" onclick="setFontSize('medium', this)">متوسط</button>
             <button class="font-size-btn" onclick="setFontSize('large', this)">بزرگ</button>
@@ -197,11 +216,18 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
         <h3>داده‌ها</h3>
         <div class="setting-item" onclick="backupData()">
           <div class="setting-info"><div class="setting-label">💾 پشتیبان‌گیری</div><div class="setting-sub">ذخیره اطلاعات در فایل</div></div>
-          <div style="color:var(--primary);">›</div>
+          <div style="color:var(--primary);font-size:20px;">›</div>
         </div>
         <div class="setting-item" onclick="restoreData()">
           <div class="setting-info"><div class="setting-label">📂 بازیابی</div><div class="setting-sub">بازیابی از فایل پشتیبان</div></div>
-          <div style="color:var(--primary);">›</div>
+          <div style="color:var(--primary);font-size:20px;">›</div>
+        </div>
+      </div>
+      
+      <div class="settings-group">
+        <h3>درباره</h3>
+        <div class="setting-item" style="cursor:default;">
+          <div class="setting-info" style="text-align:center;"><div class="setting-label">حساب و کتاب</div><div class="setting-sub">نسخه ۳.۳.۰ — ساخته‌شده با ❤️</div></div>
         </div>
       </div>
     </div>
@@ -217,7 +243,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
   </nav>
 </div>
 
-<!-- صفحه جزئیات یک شخص -->
+<!-- صفحه جزئیات شخص -->
 <div class="detail-screen" id="personDetailScreen">
   <div class="detail-header">
     <button class="back-btn" onclick="closePersonDetail()">&#10095;</button>
@@ -242,7 +268,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
   </div>
 </div>
 
-<!-- مودال ثبت تراکنش جدید (از طریق صفحه شخص یا دکمه‌های خانه) -->
+<!-- مودال ثبت تراکنش -->
 <div class="modal-overlay" id="transactionModal">
   <div class="modal">
     <h2 id="txModalTitle">تراکنش جدید</h2>
@@ -252,10 +278,9 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
       <button data-type="credit" onclick="setTxType('credit', this)">بستانکار (بدهی من)</button>
     </div>
 
-    <!-- انتخاب شخص (اگر از خانه آمده باشیم) -->
     <div class="field" id="txPersonSelectContainer">
       <label>انتخاب شخص</label>
-      <select id="txPersonSelect"></select>
+      <select id="txPersonSelect" onchange="onPersonSelectChange(this)"></select>
     </div>
 
     <div class="field"><label>مبلغ</label><input type="text" id="txAmount" placeholder="50,000" inputmode="numeric" dir="ltr"></div>
@@ -287,7 +312,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 
 <script>
 // ==========================================
-// متغیرها و ذخیره‌سازی
+// متغیرها
 // ==========================================
 var people = []; 
 var transactions = []; 
@@ -296,6 +321,8 @@ var currentSelectedPersonId = null;
 var editingPersonId = null; 
 var currentFontSize = 'medium';
 var currentReportType = 'daily';
+var themeMode = 'auto';
+var pendingQuickAddType = null;
 
 var monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 var STORAGE_KEY = 'hesab_ketab_v3';
@@ -306,9 +333,17 @@ function toast(msg) {
   var t = get('toast'); if(t) { t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2000); }
 }
 
+// ==========================================
+// ذخیره و بازیابی
+// ==========================================
 function saveData() {
   try { 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ people: people, transactions: transactions, fontSize: currentFontSize })); 
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ 
+      people: people, 
+      transactions: transactions, 
+      fontSize: currentFontSize,
+      themeMode: themeMode
+    })); 
   } catch(e) {}
 }
 
@@ -320,12 +355,13 @@ function loadData() {
       people = data.people || [];
       transactions = data.transactions || [];
       if(data.fontSize) currentFontSize = data.fontSize;
+      if(data.themeMode) themeMode = data.themeMode;
     }
   } catch(e) { people = []; transactions = []; }
 }
 
 // ==========================================
-// تاریخ شمسی و زمان
+// تاریخ شمسی
 // ==========================================
 function getTodayJalali() {
   var now = new Date(), gy = now.getFullYear(), gm = now.getMonth() + 1, gd = now.getDate();
@@ -346,30 +382,32 @@ function getMonthLength(jy, jm) {
   return [1,5,9,13,17,22,26,30].indexOf(jy % 33) >= 0 ? 30 : 29;
 }
 
-function fillDateSelectors(yId, mId, dId, isOptional, defJ) {
+function fillDateSelectors(yId, mId, dId, defJ) {
   var t = getTodayJalali();
   var jy = defJ ? defJ.jy : t.jy;
   var jm = defJ ? defJ.jm : t.jm;
   var jd = defJ ? defJ.jd : t.jd;
 
   var selY = get(yId), selM = get(mId), selD = get(dId);
-  var htmlY = isOptional ? '<option value="">---</option>' : '';
+  if(!selY || !selM || !selD) return;
+  
+  var htmlY = '';
   for (var i = 1400; i <= 1420; i++) htmlY += '<option value="' + i + '"' + (i === jy ? ' selected' : '') + '>' + i + '</option>';
   selY.innerHTML = htmlY;
   
-  var htmlM = isOptional ? '<option value="">---</option>' : '';
+  var htmlM = '';
   for (var j = 1; j <= 12; j++) htmlM += '<option value="' + j + '"' + (j === jm ? ' selected' : '') + '>' + monthNames[j-1] + '</option>';
   selM.innerHTML = htmlM;
   
-  updateDayOptions(yId, mId, dId, isOptional, jd);
-  selY.onchange = function() { updateDayOptions(yId, mId, dId, isOptional); };
-  selM.onchange = function() { updateDayOptions(yId, mId, dId, isOptional); };
+  updateDayOptions(yId, mId, dId, jd);
+  selY.onchange = function() { updateDayOptions(yId, mId, dId); };
+  selM.onchange = function() { updateDayOptions(yId, mId, dId); };
 }
 
-function updateDayOptions(yId, mId, dId, isOptional, selectDay) {
+function updateDayOptions(yId, mId, dId, selectDay) {
   var y = +get(yId).value, m = +get(mId).value;
   var selD = get(dId);
-  if (!y || !m) { selD.innerHTML = '<option value="">---</option>'; return; }
+  if (!y || !m) return;
   var len = getMonthLength(y, m);
   var prev = selectDay || +selD.value || 1; if (prev > len) prev = len;
   var html = ''; for (var d = 1; d <= len; d++) html += '<option value="' + d + '"' + (d === prev ? ' selected' : '') + '>' + d + '</option>';
@@ -390,19 +428,8 @@ function getPersonBalance(personId) {
   return bal;
 }
 
-function getLastTxDate(personId) {
-  var maxId = 0, dateStr = '---';
-  for (var i = 0; i < transactions.length; i++) {
-    if (transactions[i].personId === personId && transactions[i].id > maxId) {
-      maxId = transactions[i].id;
-      dateStr = transactions[i].date;
-    }
-  }
-  return dateStr;
-}
-
 // ==========================================
-// ناوبری و رفرش
+// ناوبری
 // ==========================================
 function switchTab(screenId, btn) {
   var screens = document.querySelectorAll('.screen');
@@ -411,7 +438,7 @@ function switchTab(screenId, btn) {
   
   var btns = document.querySelectorAll('.bottom-nav button');
   for (var j = 0; j < btns.length; j++) { btns[j].classList.remove('active'); }
-  if (btn) { btns[j].classList.remove('active'); btn.classList.add('active'); }
+  if (btn) { btn.classList.add('active'); }
 
   if(screenId === 'homeScreen') renderHome();
   if(screenId === 'historyScreen') renderHistory();
@@ -438,7 +465,6 @@ function renderHome() {
   else if (bal < 0) { balEl.style.color = 'var(--red)'; balEl.textContent = fmt(-bal) + ' بدهی'; }
   else { balEl.style.color = 'var(--text2)'; balEl.textContent = 'تسویه'; }
 
-  // مرتب‌سازی اشخاص بر اساس آخرین تراکنش
   var peopleWithTx = people.map(function(p) {
     var lastTx = transactions.filter(function(t){ return t.personId === p.id; }).pop();
     return { person: p, lastTxTime: lastTx ? lastTx.id : 0, lastDate: lastTx ? lastTx.date : '---' };
@@ -634,17 +660,33 @@ function savePerson() {
     var p = people.find(function(x){ return x.id === editingPersonId; });
     if(p) p.name = name;
     toast('ویرایش شد');
+    saveData();
+    closePersonModal();
+    renderPeopleList();
+    renderHome();
   } else {
     var exists = people.find(function(p) { return p.name === name; });
     if (exists) { toast('این شخص قبلاً ثبت شده است'); return; }
-    people.push({ id: Date.now(), name: name });
+    var newPerson = { id: Date.now(), name: name };
+    people.push(newPerson);
     toast('شخص جدید ثبت شد');
+    saveData();
+    closePersonModal();
+    renderPeopleList();
+    renderHome();
+    
+    if (pendingQuickAddType) {
+      var type = pendingQuickAddType;
+      pendingQuickAddType = null;
+      setTimeout(function() {
+        openQuickAdd(type);
+        setTimeout(function() {
+          var sel = get('txPersonSelect');
+          if(sel) sel.value = newPerson.id;
+        }, 50);
+      }, 150);
+    }
   }
-  
-  saveData();
-  closePersonModal();
-  renderPeopleList();
-  renderHome();
 }
 
 function deletePerson(id) {
@@ -662,27 +704,46 @@ function deletePerson(id) {
 }
 
 // ==========================================
-// مودال تراکنش (از خانه یا شخص)
+// مودال تراکنش
 // ==========================================
 var txIsQuickAdd = false; 
 function openQuickAdd(type) {
-  if (people.length === 0) { toast('ابتدا یک شخص تعریف کنید'); switchTab('peopleScreen', document.querySelectorAll('.bottom-nav button')[3]); return; }
+  if (people.length === 0) { 
+    pendingQuickAddType = type;
+    editingPersonId = null;
+    get('personModalTitle').textContent = 'افزودن شخص جدید';
+    get('personNameInput').value = '';
+    get('personModal').classList.add('show');
+    return;
+  }
+  
   txIsQuickAdd = true;
   get('txPersonSelectContainer').style.display = 'block';
   
-  // پر کردن لیست کشویی اشخاص
   var sel = get('txPersonSelect');
   sel.innerHTML = '';
   for (var i = 0; i < people.length; i++) {
     sel.innerHTML += '<option value="' + people[i].id + '">' + people[i].name + '</option>';
   }
+  sel.innerHTML += '<option value="__new__" style="color:var(--primary);font-weight:700;">➕ ثبت شخص جدید...</option>';
 
   get('txModalTitle').textContent = (type === 'debit') ? 'ثبت بدهی (طلب من)' : 'ثبت طلب (بدهی من)';
   setTxType(type, document.querySelector('.type-toggle button[data-type="' + type + '"]'));
   
   get('txAmount').value = ''; get('txNote').value = '';
-  fillDateSelectors('txYear', 'txMonth', 'txDay', false, null);
+  fillDateSelectors('txYear', 'txMonth', 'txDay', null);
   get('transactionModal').classList.add('show');
+}
+
+function onPersonSelectChange(sel) {
+  if (sel.value === '__new__') {
+    pendingQuickAddType = currentTxType;
+    closeTransactionModal();
+    editingPersonId = null;
+    get('personModalTitle').textContent = 'افزودن شخص جدید';
+    get('personNameInput').value = '';
+    get('personModal').classList.add('show');
+  }
 }
 
 function openAddTransactionModal() {
@@ -694,7 +755,7 @@ function openAddTransactionModal() {
   
   get('txAmount').value = ''; get('txNote').value = '';
   setTxType('debit', document.querySelector('.type-toggle button[data-type="debit"]'));
-  fillDateSelectors('txYear', 'txMonth', 'txDay', false, null);
+  fillDateSelectors('txYear', 'txMonth', 'txDay', null);
   get('transactionModal').classList.add('show');
 }
 
@@ -713,7 +774,7 @@ function saveTransaction() {
   if (!amount || amount <= 0) { toast('مبلغ معتبر وارد کنید'); return; }
 
   var targetPersonId = txIsQuickAdd ? +get('txPersonSelect').value : currentSelectedPersonId;
-  if (!targetPersonId) { toast('شخص را انتخاب کنید'); return; }
+  if (!targetPersonId || targetPersonId === 0) { toast('شخص را انتخاب کنید'); return; }
 
   var now = new Date();
   var timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
@@ -738,7 +799,7 @@ function saveTransaction() {
 }
 
 // ==========================================
-// گزارش‌گیری
+// گزارش‌گیری (باگ رفع شد)
 // ==========================================
 function setReportType(type, btn) {
   currentReportType = type;
@@ -746,14 +807,17 @@ function setReportType(type, btn) {
   for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
   if(btn) btn.classList.add('active');
 
-  get('customDateContainer').style.display = (type === 'custom') ? 'block' : 'none';
-  
   if (type === 'custom') {
-    fillDateSelectors('repStartY', 'repStartM', 'repStartD', false, null);
-    fillDateSelectors('repEndY', 'repEndM', 'repEndD', false, null);
+    get('customDateContainer').classList.remove('hidden');
+    var t = getTodayJalali();
+    var startJ = { jy: t.jy, jm: t.jm, jd: 1 };
+    fillDateSelectors('repStartY', 'repStartM', 'repStartD', startJ);
+    fillDateSelectors('repEndY', 'repEndM', 'repEndD', null);
     get('reportResult').innerHTML = '<div class="empty">تاریخ را انتخاب و دکمه نمایش را بزنید.</div>';
     return;
   }
+  
+  get('customDateContainer').classList.add('hidden');
 
   var t = getTodayJalali();
   var todayStr = t.jy + '/' + String(t.jm).padStart(2,'0') + '/' + String(t.jd).padStart(2,'0');
@@ -787,7 +851,12 @@ function displayReportResult(list, title) {
   var bal = td - tc;
   var el = get('reportResult');
   
-  el.innerHTML = '<h3>' + (title === 'daily' ? 'گزارش امروز' : (title === 'monthly' ? 'گزارش این ماه' : (title === 'yearly' ? 'گزارش این سال' : title))) + '</h3>' +
+  var titleText = title;
+  if (title === 'daily') titleText = 'گزارش امروز';
+  else if (title === 'monthly') titleText = 'گزارش این ماه';
+  else if (title === 'yearly') titleText = 'گزارش این سال';
+  
+  el.innerHTML = '<h3>' + titleText + '</h3>' +
     '<div class="report-stat"><span>تعداد تراکنش:</span><span>' + list.length + ' مورد</span></div>' +
     '<div class="report-stat"><span>مجموع طلب (بدهکار):</span><span style="color:var(--green);font-weight:700;">' + fmt(td) + '</span></div>' +
     '<div class="report-stat"><span>مجموع بدهی (بستانکار):</span><span style="color:var(--red);font-weight:700;">' + fmt(tc) + '</span></div>' +
@@ -795,29 +864,25 @@ function displayReportResult(list, title) {
 }
 
 // ==========================================
-// تنظیمات (فونت، تم، بکاپ)
+// تنظیمات (فونت + تم سه‌حالته)
 // ==========================================
 function setFontSize(size, btn) {
   currentFontSize = size;
   var btns = document.querySelectorAll('.font-size-btn');
   for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
   if(btn) btn.classList.add('active');
-
-  var zoom = '1';
-  if(size === 'small') zoom = '0.9';
-  else if(size === 'large') zoom = '1.15';
-  document.body.style.zoom = zoom;
+  applyFontSize();
   saveData();
-  toast('اندازه فونت تغییر کرد');
 }
 
 function applyFontSize() {
   var btns = document.querySelectorAll('.font-size-btn');
   for(var i=0; i<btns.length; i++) {
     btns[i].classList.remove('active');
-    if(btns[i].textContent === 'کوچک' && currentFontSize === 'small') btns[i].classList.add('active');
-    else if(btns[i].textContent === 'متوسط' && currentFontSize === 'medium') btns[i].classList.add('active');
-    else if(btns[i].textContent === 'بزرگ' && currentFontSize === 'large') btns[i].classList.add('active');
+    var txt = btns[i].textContent;
+    if(txt === 'کوچک' && currentFontSize === 'small') btns[i].classList.add('active');
+    else if(txt === 'متوسط' && currentFontSize === 'medium') btns[i].classList.add('active');
+    else if(txt === 'بزرگ' && currentFontSize === 'large') btns[i].classList.add('active');
   }
   var zoom = '1';
   if(currentFontSize === 'small') zoom = '0.9';
@@ -825,15 +890,46 @@ function applyFontSize() {
   document.body.style.zoom = zoom;
 }
 
-function toggleTheme() {
-  var html = document.documentElement;
-  if (html.getAttribute('data-theme') === 'light') { html.setAttribute('data-theme', 'dark'); get('themeStatus').textContent = 'تاریک'; }
-  else { html.setAttribute('data-theme', 'light'); get('themeStatus').textContent = 'روشن'; }
+function setThemeMode(mode, btn) {
+  themeMode = mode;
+  var btns = document.querySelectorAll('.theme-mode-btn');
+  for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+  if(btn) btn.classList.add('active');
+  applyTheme();
+  saveData();
 }
 
+function applyTheme() {
+  var isDark = false;
+  if (themeMode === 'auto') {
+    isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  } else {
+    isDark = themeMode === 'dark';
+  }
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+}
+
+function refreshThemeButtons() {
+  var btns = document.querySelectorAll('.theme-mode-btn');
+  for(var i=0; i<btns.length; i++) {
+    btns[i].classList.remove('active');
+    if(btns[i].getAttribute('data-mode') === themeMode) btns[i].classList.add('active');
+  }
+}
+
+// شنیدن تغییرات تم سیستم
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+    if (themeMode === 'auto') applyTheme();
+  });
+}
+
+// ==========================================
+// بکاپ
+// ==========================================
 function backupData() {
   if (!window.AndroidBridge || !window.AndroidBridge.exportBackup) { toast('خطا: پل ارتباطی پیدا نشد'); return; }
-  var data = JSON.stringify({ people: people, transactions: transactions, fontSize: currentFontSize });
+  var data = JSON.stringify({ people: people, transactions: transactions, fontSize: currentFontSize, themeMode: themeMode });
   window.AndroidBridge.exportBackup("1", 'hesab_ketab_backup.json', data);
   toast('در حال ذخیره...');
 }
@@ -851,7 +947,9 @@ window.onImportResult = function(id, content, error) {
     if (data.people && data.transactions) {
       people = data.people; transactions = data.transactions;
       if(data.fontSize) currentFontSize = data.fontSize;
-      saveData(); applyFontSize(); renderPeopleList(); renderHome(); renderHistory(); toast('بازیابی انجام شد');
+      if(data.themeMode) themeMode = data.themeMode;
+      saveData(); applyFontSize(); applyTheme(); refreshThemeButtons();
+      renderPeopleList(); renderHome(); renderHistory(); toast('بازیابی انجام شد');
     } else { toast('فایل نامعتبر است'); }
   } catch(e) { toast('فایل نامعتبر است'); }
 };
@@ -866,6 +964,8 @@ get('txAmount').addEventListener('input', function(e) {
 // ==========================================
 loadData();
 applyFontSize();
+applyTheme();
+refreshThemeButtons();
 renderHome();
 renderPeopleList();
 </script>
