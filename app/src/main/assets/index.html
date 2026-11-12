@@ -5,18 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>حساب و کتاب</title>
 <style>
-/* ============ BASE THEME ============ */
-:root[data-theme="light"]{
-  --bg:#F5F5F5;--surface:#FFF;--text:#212121;--text2:#757575;--border:#E0E0E0;--input-bg:#FAFAFA;
-  --shadow:0 2px 8px rgba(0,0,0,0.08);--green:#2E7D32;--green-bg:#E8F5E9;--red:#C62828;--red-bg:#FFEBEE;
-  --nav-shadow:0 -2px 8px rgba(0,0,0,0.06);
-}
-:root[data-theme="dark"]{
-  --bg:#121212;--surface:#1E1E1E;--text:#E0E0E0;--text2:#9E9E9E;--border:#333;--input-bg:#2A2A2A;
-  --shadow:0 2px 8px rgba(0,0,0,0.4);--green:#66BB6A;--green-bg:#1B2E1F;--red:#EF5350;--red-bg:#2E1B1B;
-  --nav-shadow:0 -2px 8px rgba(0,0,0,0.3);
-}
-/* ============ ACCENT COLORS ============ */
+:root[data-theme="light"]{--bg:#F5F5F5;--surface:#FFF;--text:#212121;--text2:#757575;--border:#E0E0E0;--input-bg:#FAFAFA;--shadow:0 2px 8px rgba(0,0,0,0.08);--green:#2E7D32;--green-bg:#E8F5E9;--red:#C62828;--red-bg:#FFEBEE;--nav-shadow:0 -2px 8px rgba(0,0,0,0.06)}
+:root[data-theme="dark"]{--bg:#121212;--surface:#1E1E1E;--text:#E0E0E0;--text2:#9E9E9E;--border:#333;--input-bg:#2A2A2A;--shadow:0 2px 8px rgba(0,0,0,0.4);--green:#66BB6A;--green-bg:#1B2E1F;--red:#EF5350;--red-bg:#2E1B1B;--nav-shadow:0 -2px 8px rgba(0,0,0,0.3)}
 :root[data-theme="light"][data-accent="teal"]  {--primary:#00897B;--primary-dark:#00695C;--primary-light:#E0F2F1}
 :root[data-theme="light"][data-accent="blue"]  {--primary:#1976D2;--primary-dark:#0D47A1;--primary-light:#E3F2FD}
 :root[data-theme="light"][data-accent="purple"]{--primary:#7B1FA2;--primary-dark:#4A148C;--primary-light:#F3E5F5}
@@ -27,24 +17,22 @@
 :root[data-theme="dark"][data-accent="purple"]{--primary:#BA68C8;--primary-dark:#7B1FA2;--primary-light:#2E1B3D}
 :root[data-theme="dark"][data-accent="orange"]{--primary:#FFB74D;--primary-dark:#EF6C00;--primary-light:#3D2210}
 :root[data-theme="dark"][data-accent="pink"]  {--primary:#F06292;--primary-dark:#D81B60;--primary-light:#3D1020}
-
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent;transition:background 0.3s, color 0.3s}
+body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent}
 .app{display:flex;flex-direction:column;height:100vh;height:100dvh}
 .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
 .screen{display:none;padding-bottom:20px}
 .screen.active{display:block}
 .hidden{display:none !important}
-.header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:20px 16px 24px;border-radius:0 0 24px 24px;box-shadow:var(--shadow);transition:background 0.3s}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:20px 16px 24px;border-radius:0 0 24px 24px;box-shadow:var(--shadow)}
 .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .header h1{font-size:20px;font-weight:700}
 .page-header{background:var(--surface);padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .page-header h1{font-size:18px;font-weight:700}
 .list{padding:12px;display:flex;flex-direction:column;gap:8px}
 .empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:14px;line-height:1.8}
-.card{background:var(--surface);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;position:relative;cursor:pointer;transition:transform 0.1s}
-.card:active{transform:scale(0.98)}
+.card{background:var(--surface);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;position:relative;cursor:pointer}
 .avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;color:#fff}
 .card-body{flex:1;min-width:0}
 .card-name{font-size:15px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -53,13 +41,11 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .card-amount.debit{color:var(--green)}
 .card-amount.credit{color:var(--red)}
 .badge{font-size:10px;padding:2px 6px;border-radius:6px;font-weight:700;background:var(--primary-light);color:var(--primary)}
-.fab{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:20px;background:var(--primary);color:#fff;border:none;width:56px;height:56px;border-radius:18px;font-size:28px;box-shadow:0 6px 16px rgba(0,0,0,0.2);cursor:pointer;z-index:50;transition:background 0.3s}
+.fab{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:20px;background:var(--primary);color:#fff;border:none;width:56px;height:56px;border-radius:18px;font-size:28px;box-shadow:0 6px 16px rgba(0,0,0,0.2);cursor:pointer;z-index:50}
 .bottom-nav{display:flex;background:var(--surface);border-top:1px solid var(--border);box-shadow:var(--nav-shadow);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:60}
 .bottom-nav button{flex:1;background:none;border:none;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text2);font-family:inherit;font-size:11px;cursor:pointer}
 .bottom-nav button.active{color:var(--primary);font-weight:700}
 .bottom-nav button .icon{font-size:22px}
-
-/* ============ MODALS ============ */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;justify-content:center;z-index:9999}
 .modal-overlay.show{display:flex}
 .modal{background:var(--surface);border-radius:22px 22px 0 0;width:100%;max-width:500px;padding:20px 16px;max-height:90vh;overflow-y:auto}
@@ -80,10 +66,8 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .btn-danger{background:var(--red);color:#fff}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;z-index:10000;opacity:0;pointer-events:none;transition:opacity 0.3s;max-width:90%;text-align:center}
 .toast.show{opacity:1}
-
-/* ============ HOME ============ */
 .action-buttons{display:flex;gap:10px;padding:16px}
-.action-btn-big{flex:1;padding:16px;border-radius:14px;border:none;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;gap:8px}
+.action-btn-big{flex:1;padding:16px;border-radius:14px;border:none;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
 .action-btn-big.debit{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
 .action-btn-big.credit{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
 .summary-section{margin:16px;padding:16px;background:var(--surface);border-radius:14px;box-shadow:var(--shadow)}
@@ -91,10 +75,8 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .summary-row:last-child{border-bottom:none;padding-top:12px;font-weight:700;font-size:16px}
 .search-box{padding:12px;background:var(--surface)}
 .search-box input{width:100%;padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--input-bg);color:var(--text);font-family:inherit;font-size:14px;outline:none}
-
-/* ============ PERSON DETAIL ============ */
-.detail-screen{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s ease}
-.detail-screen.show{transform:translateX(0)}
+.detail-screen{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column}
+.detail-screen.show{display:flex}
 .detail-header{background:var(--surface);padding:16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--border)}
 .detail-header .back-btn{background:none;border:none;font-size:28px;color:var(--primary);cursor:pointer;padding:0 10px;font-weight:bold;line-height:1}
 .detail-header-info{flex:1}
@@ -104,8 +86,6 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .add-person-btn{background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .del-btn{background:none;border:none;font-size:18px;cursor:pointer;padding:6px;margin-left:4px}
 .del-tx-btn{background:none;border:none;font-size:16px;cursor:pointer;padding:6px;color:var(--text2)}
-
-/* ============ REPORT ============ */
 .report-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
 .report-btn{padding:12px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-weight:700;cursor:pointer;text-align:center}
 .report-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
@@ -113,8 +93,6 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .report-result h3{font-size:16px;margin-bottom:12px;color:var(--primary)}
 .report-stat{font-size:15px;margin:8px 0;display:flex;justify-content:space-between}
 #customDateContainer{padding:12px;background:var(--surface);border-radius:14px;margin:0 12px;box-shadow:var(--shadow)}
-
-/* ============ SETTINGS ============ */
 .settings-group{padding:8px 12px}
 .settings-group h3{font-size:12px;color:var(--text2);font-weight:700;padding:12px 6px 8px;text-align:center;letter-spacing:1px}
 .setting-item{background:var(--surface);border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer;gap:12px}
@@ -123,26 +101,20 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .setting-item .setting-info{flex:1;text-align:right}
 .setting-card{background:var(--surface);border-radius:12px;padding:14px;margin-bottom:8px;box-shadow:var(--shadow)}
 .setting-card-title{font-size:13px;font-weight:600;margin-bottom:12px;text-align:center;color:var(--text)}
-
 .switch{width:48px;height:26px;border-radius:13px;background:var(--border);position:relative;transition:background 0.2s;flex-shrink:0;cursor:pointer}
 .switch.on{background:var(--primary)}
 .switch::after{content:'';position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform 0.2s}
 .switch.on::after{transform:translateX(-22px)}
-
 .theme-modes{display:flex;gap:8px}
 .theme-mode-btn{flex:1;padding:12px 6px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
 .theme-mode-btn .emo{font-size:20px}
 .theme-mode-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-
 .accent-colors{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.accent-circle{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 4px rgba(0,0,0,0.15)}
+.accent-circle{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.15)}
 .accent-circle.active{border-color:var(--text);transform:scale(1.1)}
-
-/* ============ LOCK SCREEN ============ */
-.lock-screen{position:fixed;inset:0;background:linear-gradient(160deg,var(--primary),var(--primary-dark));z-index:10001;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:#fff}
-.lock-screen.hidden{display:none}
-.lock-icon{font-size:70px;margin-bottom:16px;animation:lockPulse 2s infinite}
-@keyframes lockPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.lock-screen{position:fixed;inset:0;background:linear-gradient(160deg,var(--primary),var(--primary-dark));z-index:10001;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;color:#fff}
+.lock-screen.show{display:flex}
+.lock-icon{font-size:70px;margin-bottom:16px}
 .lock-title{font-size:18px;font-weight:700;margin-bottom:8px;text-align:center}
 .lock-subtitle{font-size:13px;opacity:0.85;margin-bottom:20px;text-align:center}
 .lock-error{color:#FFCDD2;font-size:13px;height:20px;margin-bottom:10px;text-align:center;font-weight:600}
@@ -150,16 +122,17 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .pin-dot{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.6);transition:all 0.15s}
 .pin-dot.filled{background:#fff;transform:scale(1.1)}
 .pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px;justify-content:center}
-.pin-pad button{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:26px;font-weight:600;font-family:inherit;cursor:pointer;transition:background 0.15s}
-.pin-pad button:active{background:rgba(255,255,255,0.3)}
+.pin-pad button{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:26px;font-weight:600;font-family:inherit;cursor:pointer}
 .pin-pad .empty{visibility:hidden}
 .lock-forgot{margin-top:30px;background:none;border:none;color:rgba(255,255,255,0.7);font-family:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
+#errBanner{position:fixed;top:0;left:0;right:0;background:#c00;color:#fff;padding:8px 12px;font-family:monospace;font-size:11px;z-index:99999;direction:ltr;text-align:left;max-height:30vh;overflow:auto;white-space:pre-wrap;display:none}
 </style>
 </head>
 <body>
+<div id="errBanner"></div>
 
-<!-- ============ LOCK SCREEN ============ -->
-<div class="lock-screen hidden" id="lockScreen">
+<!-- LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
   <div class="lock-icon">🔒</div>
   <div class="lock-title">حساب و کتاب</div>
   <div class="lock-subtitle">رمز ۴ رقمی خود را وارد کنید</div>
@@ -171,40 +144,33 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
   <button class="lock-forgot" onclick="forgotPin()">رمز را فراموش کرده‌ام؟</button>
 </div>
 
-<div class="app hidden" id="app">
+<!-- MAIN APP (visible by default) -->
+<div class="app" id="app">
   <div class="content" id="content">
-    
-    <!-- صفحه خانه -->
+    <!-- HOME -->
     <div class="screen active" id="homeScreen">
       <div class="header">
         <div class="header-top"><h1>حساب و کتاب</h1></div>
       </div>
-      
       <div class="action-buttons">
         <button class="action-btn-big debit" onclick="openQuickAdd('debit')">↓ ثبت بدهی</button>
         <button class="action-btn-big credit" onclick="openQuickAdd('credit')">↑ ثبت طلب</button>
       </div>
-
-      <div class="section-title" style="font-size:13px;color:var(--text2);font-weight:700;padding:8px 16px;">اشخاص (بر اساس آخرین تراکنش)</div>
+      <div style="font-size:13px;color:var(--text2);font-weight:700;padding:8px 16px;">اشخاص (بر اساس آخرین تراکنش)</div>
       <div class="list" id="homeList"></div>
-
       <div class="summary-section">
         <div class="summary-row"><span>مجموع طلب من:</span><span id="homeTotalDebit" style="color:var(--green);font-weight:700;">0</span></div>
         <div class="summary-row"><span>مجموع بدهی من:</span><span id="homeTotalCredit" style="color:var(--red);font-weight:700;">0</span></div>
         <div class="summary-row"><span>مانده کل:</span><span id="homeBalance">0</span></div>
       </div>
     </div>
-
-    <!-- صفحه تاریخچه -->
+    <!-- HISTORY -->
     <div class="screen" id="historyScreen">
       <div class="page-header"><h1>تاریخچه</h1></div>
-      <div class="search-box">
-        <input type="text" id="historySearch" placeholder="جستجو در نام، مبلغ، یادداشت..." onkeyup="renderHistory()">
-      </div>
+      <div class="search-box"><input type="text" id="historySearch" placeholder="جستجو..." onkeyup="renderHistory()"></div>
       <div class="list" id="historyList"></div>
     </div>
-
-    <!-- صفحه گزارش -->
+    <!-- REPORTS -->
     <div class="screen" id="reportsScreen">
       <div class="page-header"><h1>گزارش‌گیری</h1></div>
       <div class="report-buttons">
@@ -213,51 +179,33 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
         <button class="report-btn" onclick="setReportType('yearly', this)">سالانه</button>
         <button class="report-btn" onclick="setReportType('custom', this)">دلخواه</button>
       </div>
-      <div id="customDateContainer" class="hidden">
+      <div id="customDateContainer" style="display:none">
         <div class="field"><label>از تاریخ</label>
-          <div class="date-row">
-            <select id="repStartY"></select><select id="repStartM"></select><select id="repStartD"></select>
-          </div>
+          <div class="date-row"><select id="repStartY"></select><select id="repStartM"></select><select id="repStartD"></select></div>
         </div>
         <div class="field"><label>تا تاریخ</label>
-          <div class="date-row">
-            <select id="repEndY"></select><select id="repEndM"></select><select id="repEndD"></select>
-          </div>
+          <div class="date-row"><select id="repEndY"></select><select id="repEndM"></select><select id="repEndD"></select></div>
         </div>
-        <button style="width:100%;padding:12px;border-radius:10px;border:none;font-family:inherit;font-weight:700;background:var(--primary);color:#fff;cursor:pointer;" onclick="calculateCustomReport()">نمایش گزارش</button>
+        <button style="width:100%;padding:12px;border-radius:10px;border:none;font-family:inherit;font-weight:700;background:var(--primary);color:#fff;cursor:pointer" onclick="calculateCustomReport()">نمایش گزارش</button>
       </div>
-      <div class="report-result" id="reportResult">
-        <div class="empty">دسته‌بندی مورد نظر را انتخاب کنید</div>
-      </div>
+      <div class="report-result" id="reportResult"><div class="empty">دسته را انتخاب کنید</div></div>
     </div>
-
-    <!-- صفحه اشخاص -->
+    <!-- PEOPLE -->
     <div class="screen" id="peopleScreen">
-      <div class="page-header">
-        <h1>اشخاص</h1>
-        <button class="add-person-btn" onclick="openAddPersonModal()">+ شخص جدید</button>
-      </div>
-      <div class="search-box">
-        <input type="text" id="peopleSearch" placeholder="جستجوی شخص..." onkeyup="renderPeopleList()">
-      </div>
+      <div class="page-header"><h1>اشخاص</h1><button class="add-person-btn" onclick="openAddPersonModal()">+ شخص جدید</button></div>
+      <div class="search-box"><input type="text" id="peopleSearch" placeholder="جستجوی شخص..." onkeyup="renderPeopleList()"></div>
       <div class="list" id="peopleList"></div>
     </div>
-
-    <!-- صفحه تنظیمات -->
+    <!-- SETTINGS -->
     <div class="screen" id="settingsScreen">
       <div class="page-header"><h1>تنظیمات</h1></div>
-      
       <div class="settings-group">
         <h3>🔐 امنیت</h3>
         <div class="setting-item" onclick="togglePinSetting()">
-          <div class="setting-info">
-            <div class="setting-label">قفل با پین ۴ رقمی</div>
-            <div class="setting-sub" id="pinStatus">غیرفعال</div>
-          </div>
+          <div class="setting-info"><div class="setting-label">قفل با پین ۴ رقمی</div><div class="setting-sub" id="pinStatus">غیرفعال</div></div>
           <div class="switch" id="pinSwitch"></div>
         </div>
       </div>
-      
       <div class="settings-group">
         <h3>🎨 ظاهر</h3>
         <div class="setting-card">
@@ -271,52 +219,36 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
         <div class="setting-card">
           <div class="setting-card-title">رنگ برنامه</div>
           <div class="accent-colors">
-            <button class="accent-circle" data-accent="teal" style="background:#00897B" onclick="setAccent('teal', this)" title="سبز"></button>
-            <button class="accent-circle" data-accent="blue" style="background:#1976D2" onclick="setAccent('blue', this)" title="آبی"></button>
-            <button class="accent-circle" data-accent="purple" style="background:#7B1FA2" onclick="setAccent('purple', this)" title="بنفش"></button>
-            <button class="accent-circle" data-accent="orange" style="background:#EF6C00" onclick="setAccent('orange', this)" title="نارنجی"></button>
-            <button class="accent-circle" data-accent="pink" style="background:#D81B60" onclick="setAccent('pink', this)" title="صورتی"></button>
+            <div class="accent-circle" data-accent="teal" style="background:#00897B" onclick="setAccent('teal', this)"></div>
+            <div class="accent-circle" data-accent="blue" style="background:#1976D2" onclick="setAccent('blue', this)"></div>
+            <div class="accent-circle" data-accent="purple" style="background:#7B1FA2" onclick="setAccent('purple', this)"></div>
+            <div class="accent-circle" data-accent="orange" style="background:#EF6C00" onclick="setAccent('orange', this)"></div>
+            <div class="accent-circle" data-accent="pink" style="background:#D81B60" onclick="setAccent('pink', this)"></div>
           </div>
         </div>
       </div>
-
       <div class="settings-group">
         <h3>💾 داده‌ها</h3>
         <div class="setting-item" onclick="backupData()">
-          <div class="setting-info">
-            <div class="setting-label">پشتیبان‌گیری</div>
-            <div class="setting-sub" id="lastBackupText">هنوز پشتیبان نگرفته‌اید</div>
-          </div>
-          <div style="color:var(--primary);font-size:20px;">›</div>
+          <div class="setting-info"><div class="setting-label">پشتیبان‌گیری</div><div class="setting-sub" id="lastBackupText">هنوز پشتیبان نگرفته‌اید</div></div>
+          <div style="color:var(--primary);font-size:20px">›</div>
         </div>
         <div class="setting-item" onclick="restoreData()">
-          <div class="setting-info">
-            <div class="setting-label">بازیابی</div>
-            <div class="setting-sub">بازیابی از فایل پشتیبان</div>
-          </div>
-          <div style="color:var(--primary);font-size:20px;">›</div>
+          <div class="setting-info"><div class="setting-label">بازیابی</div><div class="setting-sub">بازیابی از فایل پشتیبان</div></div>
+          <div style="color:var(--primary);font-size:20px">›</div>
         </div>
         <div class="setting-item" onclick="clearAllData()">
-          <div class="setting-info">
-            <div class="setting-label" style="color:var(--red);">🗑️ پاک کردن همهٔ داده‌ها</div>
-            <div class="setting-sub">قابل بازگشت نیست</div>
-          </div>
+          <div class="setting-info"><div class="setting-label" style="color:var(--red)">🗑️ پاک کردن همه</div><div class="setting-sub">قابل بازگشت نیست</div></div>
         </div>
       </div>
-      
       <div class="settings-group">
         <h3>ℹ️ درباره</h3>
-        <div class="setting-item" style="cursor:default;">
-          <div class="setting-info" style="text-align:center;">
-            <div class="setting-label">حساب و کتاب</div>
-            <div class="setting-sub">نسخه ۴.۰ — ساخته‌شده با ❤️</div>
-          </div>
+        <div class="setting-item" style="cursor:default">
+          <div class="setting-info" style="text-align:center"><div class="setting-label">حساب و کتاب</div><div class="setting-sub">نسخه ۴.۱</div></div>
         </div>
       </div>
     </div>
-
   </div>
-
   <nav class="bottom-nav">
     <button class="active" onclick="switchTab('homeScreen', this)"><span class="icon">🏠</span><span>خانه</span></button>
     <button onclick="switchTab('historyScreen', this)"><span class="icon">📜</span><span>تاریخچه</span></button>
@@ -326,7 +258,20 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
   </nav>
 </div>
 
-<!-- شخص -->
+<!-- PERSON DETAIL -->
+<div class="detail-screen" id="personDetailScreen">
+  <div class="detail-header">
+    <button class="back-btn" onclick="closePersonDetail()">&#10095;</button>
+    <div class="detail-header-info">
+      <h2 id="detailPersonName">نام شخص</h2>
+      <div class="balance" id="detailPersonBalance">0</div>
+    </div>
+  </div>
+  <div class="detail-list" id="personTransactionsList"></div>
+  <button class="fab" onclick="openAddTransactionModal()">＋</button>
+</div>
+
+<!-- PERSON MODAL -->
 <div class="modal-overlay" id="personModal">
   <div class="modal">
     <h2 id="personModalTitle">افزودن شخص</h2>
@@ -338,7 +283,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
   </div>
 </div>
 
-<!-- تراکنش -->
+<!-- TRANSACTION MODAL -->
 <div class="modal-overlay" id="transactionModal">
   <div class="modal">
     <h2 id="txModalTitle">تراکنش جدید</h2>
@@ -346,7 +291,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
       <button data-type="debit" class="active" onclick="setTxType('debit', this)">بدهکار (طلب من)</button>
       <button data-type="credit" onclick="setTxType('credit', this)">بستانکار (بدهی من)</button>
     </div>
-    <div class="field" id="txPersonSelectContainer">
+    <div class="field" id="txPersonSelectContainer" style="display:none">
       <label>انتخاب شخص</label>
       <select id="txPersonSelect" onchange="onPersonSelectChange(this)"></select>
     </div>
@@ -360,7 +305,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
     <div class="field"><label>تاریخ (شمسی)</label>
       <div class="date-row"><select id="txYear"></select><select id="txMonth"></select><select id="txDay"></select></div>
     </div>
-    <div class="field"><label>توضیحات (اختیاری)</label><input type="text" id="txNote" placeholder="مثلاً علی‌الحساب"></div>
+    <div class="field"><label>توضیحات (اختیاری)</label><input type="text" id="txNote" placeholder="اختیاری"></div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeTransactionModal()">انصراف</button>
       <button class="btn-save" onclick="saveTransaction()">ذخیره</button>
@@ -368,12 +313,12 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
   </div>
 </div>
 
-<!-- تنظیم پین -->
+<!-- PIN SETUP MODAL -->
 <div class="modal-overlay" id="pinSetupModal">
   <div class="modal">
     <h2>تنظیم پین ۴ رقمی</h2>
-    <div class="field"><label>پین جدید</label><input type="tel" id="pinNewInput" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="••••" dir="ltr" style="text-align:center;font-size:22px;letter-spacing:10px"></div>
-    <div class="field"><label>تکرار پین</label><input type="tel" id="pinConfirmInput" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="••••" dir="ltr" style="text-align:center;font-size:22px;letter-spacing:10px"></div>
+    <div class="field"><label>پین جدید</label><input type="tel" id="pinNewInput" maxlength="4" inputmode="numeric" placeholder="••••" dir="ltr" style="text-align:center;font-size:22px;letter-spacing:10px"></div>
+    <div class="field"><label>تکرار پین</label><input type="tel" id="pinConfirmInput" maxlength="4" inputmode="numeric" placeholder="••••" dir="ltr" style="text-align:center;font-size:22px;letter-spacing:10px"></div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closePinSetup()">انصراف</button>
       <button class="btn-save" onclick="savePin()">ذخیره</button>
@@ -384,6 +329,18 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 <div class="toast" id="toast"></div>
 
 <script>
+// ============ ERROR HANDLER ============
+window.onerror = function(m, u, l, c, e) {
+  var b = document.getElementById('errBanner');
+  if (b) { b.style.display = 'block'; b.textContent += '⚠ ' + m + ' @' + l + '\n'; }
+  return true;
+};
+
+function get(id){ return document.getElementById(id); }
+function fmt(n){ return Number(n).toLocaleString('en-US'); }
+function toast(msg){ var t = get('toast'); if(t){ t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2200); } }
+function hashPin(pin){ var h=0; for(var i=0;i<pin.length;i++){h=((h<<5)-h)+pin.charCodeAt(i);h|=0;} return 'p'+Math.abs(h).toString(16)+'_'+pin.length; }
+
 // ============ STATE ============
 var people = [];
 var transactions = [];
@@ -397,36 +354,31 @@ var pinHash = null;
 var pinBuffer = '';
 var pinAttempts = 0;
 var pendingQuickAddType = null;
+var txIsQuickAdd = false;
 
 var monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 var STORAGE_KEY = 'hesab_ketab_v4';
-
-function get(id){ return document.getElementById(id); }
-function fmt(n){ return Number(n).toLocaleString('en-US'); }
-function toast(msg){ var t = get('toast'); if(t){ t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2200); } }
-function hashPin(pin){ var h=0; for(var i=0;i<pin.length;i++){h=((h<<5)-h)+pin.charCodeAt(i);h|=0;} return 'p'+Math.abs(h).toString(16)+'_'+pin.length; }
 
 // ============ STORAGE ============
 function saveData() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       people: people, transactions: transactions,
-      themeMode: themeMode, accent: accent, pinHash: pinHash,
-      lastBackup: localStorage.getItem('hesab_ketab_lastBackup')
+      themeMode: themeMode, accent: accent, pinHash: pinHash
     }));
   } catch(e){}
 }
 function loadData() {
   try {
     var raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      var d = JSON.parse(raw);
-      people = d.people || [];
-      transactions = d.transactions || [];
-      if(d.themeMode) themeMode = d.themeMode;
-      if(d.accent) accent = d.accent;
-      if(d.pinHash) pinHash = d.pinHash;
-    }
+    if (!raw) return;
+    var d = JSON.parse(raw);
+    if (!d) return;
+    if (Array.isArray(d.people)) people = d.people;
+    if (Array.isArray(d.transactions)) transactions = d.transactions;
+    if (d.themeMode) themeMode = d.themeMode;
+    if (d.accent) accent = d.accent;
+    if (d.pinHash) pinHash = d.pinHash;
   } catch(e){ people=[]; transactions=[]; }
 }
 
@@ -434,7 +386,7 @@ function loadData() {
 function applyTheme() {
   var isDark = false;
   if (themeMode === 'auto') {
-    isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    try { isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; } catch(e){}
   } else {
     isDark = themeMode === 'dark';
   }
@@ -456,7 +408,7 @@ function setAccent(color, btn) {
   if(btn) btn.classList.add('active');
   applyTheme();
   saveData();
-  toast('رنگ برنامه تغییر کرد');
+  toast('رنگ تغییر کرد');
 }
 function refreshThemeButtons() {
   var btns = document.querySelectorAll('.theme-mode-btn');
@@ -470,11 +422,14 @@ function refreshThemeButtons() {
     if(acc[j].getAttribute('data-accent') === accent) acc[j].classList.add('active');
   }
 }
-if (window.matchMedia) {
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-    if (themeMode === 'auto') applyTheme();
-  });
-}
+try {
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var mqHandler = function(){ if (themeMode === 'auto') applyTheme(); };
+    if (mq.addEventListener) mq.addEventListener('change', mqHandler);
+    else if (mq.addListener) mq.addListener(mqHandler);
+  }
+} catch(e){}
 
 // ============ JALALI ============
 function getTodayJalali() {
@@ -533,7 +488,7 @@ function colorForName(name) {
   return colors[sum % colors.length];
 }
 
-// ============ NAVIGATION ============
+// ============ NAV ============
 function switchTab(screenId, btn) {
   var screens = document.querySelectorAll('.screen');
   for(var i=0;i<screens.length;i++) screens[i].classList.remove('active');
@@ -547,20 +502,22 @@ function switchTab(screenId, btn) {
   if(screenId==='reportsScreen') setReportType(currentReportType, document.querySelector('.report-btn.active'));
 }
 
-// ============ RENDER HOME ============
+// ============ HOME ============
 function renderHome() {
   var td=0, tc=0;
   for(var i=0;i<transactions.length;i++) {
     if(transactions[i].type==='debit') td += transactions[i].amount;
     else tc += transactions[i].amount;
   }
-  get('homeTotalDebit').textContent = fmt(td);
-  get('homeTotalCredit').textContent = fmt(tc);
+  var dEl = get('homeTotalDebit'); if(dEl) dEl.textContent = fmt(td);
+  var cEl = get('homeTotalCredit'); if(cEl) cEl.textContent = fmt(tc);
   var bal = td - tc, balEl = get('homeBalance');
-  balEl.textContent = fmt(Math.abs(bal));
-  if(bal>0){ balEl.style.color='var(--green)'; balEl.textContent = fmt(bal)+' طلب'; }
-  else if(bal<0){ balEl.style.color='var(--red)'; balEl.textContent = fmt(-bal)+' بدهی'; }
-  else { balEl.style.color='var(--text2)'; balEl.textContent='تسویه'; }
+  if(balEl) {
+    balEl.textContent = fmt(Math.abs(bal));
+    if(bal>0){ balEl.style.color='var(--green)'; balEl.textContent = fmt(bal)+' طلب'; }
+    else if(bal<0){ balEl.style.color='var(--red)'; balEl.textContent = fmt(-bal)+' بدهی'; }
+    else { balEl.style.color='var(--text2)'; balEl.textContent='تسویه'; }
+  }
 
   var pwt = people.map(function(p){
     var lastTx = transactions.filter(function(t){ return t.personId===p.id; }).pop();
@@ -568,7 +525,7 @@ function renderHome() {
   });
   pwt.sort(function(a,b){ return b.lastTxTime - a.lastTxTime; });
 
-  var el = get('homeList');
+  var el = get('homeList'); if(!el) return;
   if(pwt.length===0){ el.innerHTML='<div class="empty">هنوز شخصی ثبت نشده است</div>'; return; }
   var html='';
   for(var k=0;k<pwt.length;k++){
@@ -584,9 +541,10 @@ function renderHome() {
   el.innerHTML = html;
 }
 
-// ============ RENDER HISTORY ============
+// ============ HISTORY ============
 function renderHistory() {
-  var q = get('historySearch').value.trim().toLowerCase();
+  var sh = get('historySearch');
+  var q = sh ? sh.value.trim().toLowerCase() : '';
   var list = transactions.slice().sort(function(a,b){ return b.id - a.id; });
   if(q){
     list = list.filter(function(t){
@@ -595,7 +553,7 @@ function renderHistory() {
              (t.category||'').toLowerCase().indexOf(q)>=0 || String(t.amount).indexOf(q)>=0;
     });
   }
-  var el = get('historyList');
+  var el = get('historyList'); if(!el) return;
   if(list.length===0){ el.innerHTML='<div class="empty">تراکنشی یافت نشد</div>'; return; }
   var html='';
   for(var i=0;i<list.length;i++){
@@ -614,10 +572,11 @@ function renderHistory() {
   el.innerHTML = html;
 }
 
-// ============ RENDER PEOPLE ============
+// ============ PEOPLE ============
 function renderPeopleList() {
-  var q = get('peopleSearch').value.trim().toLowerCase();
-  var el = get('peopleList');
+  var ps = get('peopleSearch');
+  var q = ps ? ps.value.trim().toLowerCase() : '';
+  var el = get('peopleList'); if(!el) return;
   var filtered = people.filter(function(p){ return p.name.toLowerCase().indexOf(q)>=0; });
   if(filtered.length===0){ el.innerHTML='<div class="empty">شخصی یافت نشد</div>'; return; }
   var html='';
@@ -629,8 +588,8 @@ function renderPeopleList() {
       '<div class="avatar" style="background:'+colorForName(p.name)+'">'+p.name.charAt(0)+'</div>'+
       '<div class="card-body"><div class="card-name">'+p.name+'</div>'+
       '<div class="card-sub">مانده: <span style="color:'+color+';font-weight:700;">'+txt+'</span></div></div>'+
-      '<button class="del-btn" onclick="event.stopPropagation(); openEditPersonModal('+p.id+')" style="color:var(--primary);">✏️</button>'+
-      '<button class="del-btn" onclick="event.stopPropagation(); deletePerson('+p.id+')" style="color:var(--red);">🗑️</button></div>';
+      '<button class="del-btn" onclick="event.stopPropagation(); openEditPersonModal('+p.id+')" style="color:var(--primary)">✏️</button>'+
+      '<button class="del-btn" onclick="event.stopPropagation(); deletePerson('+p.id+')" style="color:var(--red)">🗑️</button></div>';
   }
   el.innerHTML = html;
 }
@@ -640,18 +599,20 @@ function openPersonDetail(pid) {
   currentSelectedPersonId = pid;
   var p = people.find(function(x){return x.id===pid;});
   if(!p) return;
-  get('detailPersonName').textContent = p.name;
+  var nameEl = get('detailPersonName'); if(nameEl) nameEl.textContent = p.name;
   var bal = getPersonBalance(pid), el = get('detailPersonBalance');
-  if(bal>0){ el.style.color='var(--green)'; el.textContent='طلب من: '+fmt(bal); }
-  else if(bal<0){ el.style.color='var(--red)'; el.textContent='بدهی من: '+fmt(-bal); }
-  else { el.style.color='var(--text2)'; el.textContent='تسویه'; }
+  if(el){
+    if(bal>0){ el.style.color='var(--green)'; el.textContent='طلب من: '+fmt(bal); }
+    else if(bal<0){ el.style.color='var(--red)'; el.textContent='بدهی من: '+fmt(-bal); }
+    else { el.style.color='var(--text2)'; el.textContent='تسویه'; }
+  }
   renderPersonTx();
-  get('personDetailScreen').classList.add('show');
+  var ds = get('personDetailScreen'); if(ds) ds.classList.add('show');
 }
-function closePersonDetail(){ get('personDetailScreen').classList.remove('show'); currentSelectedPersonId=null; }
+function closePersonDetail(){ var ds = get('personDetailScreen'); if(ds) ds.classList.remove('show'); currentSelectedPersonId=null; }
 
 function renderPersonTx() {
-  var list = get('personTransactionsList');
+  var list = get('personTransactionsList'); if(!list) return;
   var tx = transactions.filter(function(t){return t.personId===currentSelectedPersonId;}).sort(function(a,b){return b.id-a.id;});
   if(tx.length===0){ list.innerHTML='<div class="empty">تراکنشی ثبت نشده است</div>'; return; }
   var html='';
@@ -671,7 +632,6 @@ function renderPersonTx() {
   }
   list.innerHTML = html;
 }
-
 function deleteTransaction(id) {
   if(!confirm('این تراکنش حذف شود؟')) return;
   transactions = transactions.filter(function(t){return t.id!==id;});
@@ -697,7 +657,6 @@ function openEditPersonModal(id) {
   get('personModal').classList.add('show');
 }
 function closePersonModal(){ get('personModal').classList.remove('show'); }
-
 function savePerson() {
   var name = get('personNameInput').value.trim();
   if(!name){ toast('نام را وارد کنید'); return; }
@@ -721,7 +680,6 @@ function savePerson() {
     }
   }
 }
-
 function deletePerson(id) {
   var p = people.find(function(x){return x.id===id;});
   if(!p) return;
@@ -733,7 +691,6 @@ function deletePerson(id) {
 }
 
 // ============ TRANSACTION ============
-var txIsQuickAdd = false;
 function openQuickAdd(type) {
   if(people.length===0){
     pendingQuickAddType = type;
@@ -748,7 +705,7 @@ function openQuickAdd(type) {
   var sel = get('txPersonSelect');
   sel.innerHTML = '';
   for(var i=0;i<people.length;i++) sel.innerHTML += '<option value="'+people[i].id+'">'+people[i].name+'</option>';
-  sel.innerHTML += '<option value="__new__" style="color:var(--primary);font-weight:700;">➕ ثبت شخص جدید...</option>';
+  sel.innerHTML += '<option value="__new__">➕ ثبت شخص جدید...</option>';
   get('txModalTitle').textContent = (type==='debit')?'ثبت بدهی (طلب من)':'ثبت طلب (بدهی من)';
   setTxType(type, document.querySelector('.type-toggle button[data-type="'+type+'"]'));
   get('txAmount').value = ''; get('txNote').value = '';
@@ -786,7 +743,7 @@ function saveTransaction() {
   var amt = parseFloat(get('txAmount').value.replace(/,/g,''));
   if(!amt || amt<=0){ toast('مبلغ معتبر وارد کنید'); return; }
   var pid = txIsQuickAdd ? +get('txPersonSelect').value : currentSelectedPersonId;
-  if(!pid || pid === 0){ toast('شخص را انتخاب کنید'); return; }
+  if(!pid || pid === 0 || pid === '__new__'){ toast('شخص را انتخاب کنید'); return; }
   var now = new Date();
   var timeStr = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   transactions.push({
@@ -808,14 +765,14 @@ function setReportType(type, btn) {
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
   if(btn) btn.classList.add('active');
   if(type==='custom'){
-    get('customDateContainer').classList.remove('hidden');
+    get('customDateContainer').style.display = 'block';
     var t = getTodayJalali();
     fillDateSelectors('repStartY','repStartM','repStartD', {jy:t.jy, jm:t.jm, jd:1});
     fillDateSelectors('repEndY','repEndM','repEndD', null);
     get('reportResult').innerHTML = '<div class="empty">تاریخ را انتخاب و دکمه نمایش را بزنید.</div>';
     return;
   }
-  get('customDateContainer').classList.add('hidden');
+  get('customDateContainer').style.display = 'none';
   var t = getTodayJalali();
   var today = t.jy+'/'+String(t.jm).padStart(2,'0')+'/'+String(t.jd).padStart(2,'0');
   var filtered = [];
@@ -852,7 +809,7 @@ function displayReportResult(list, title) {
 
 // ============ PIN / LOCK ============
 function initLockPad() {
-  var pad = get('lockPinPad');
+  var pad = get('lockPinPad'); if(!pad) return;
   var digits = ['1','2','3','4','5','6','7','8','9','','0','⌫'];
   var html = '';
   for(var i=0;i<digits.length;i++){
@@ -875,43 +832,38 @@ function pinPadPress(k) {
         pinAttempts++;
         pinBuffer = '';
         updatePinDots();
-        if(pinAttempts>=3){
-          get('lockError').textContent = 'تلاش‌های ناموفق: '+pinAttempts;
-        } else {
-          get('lockError').textContent = 'رمز اشتباه است (تلاش '+pinAttempts+')';
-        }
+        get('lockError').textContent = pinAttempts>=3 ? 'تلاش‌های ناموفق: '+pinAttempts : 'رمز اشتباه است';
       }
     }, 100);
   }
 }
 function updatePinDots() {
-  var dots = get('pinDots').children;
+  var pd = get('pinDots'); if(!pd) return;
+  var dots = pd.children;
   for(var i=0;i<dots.length;i++){
-    dots[i].classList.toggle('filled', i<pinBuffer.length);
+    if(i<pinBuffer.length) dots[i].classList.add('filled');
+    else dots[i].classList.remove('filled');
   }
 }
 function showLockScreen() {
-  get('lockScreen').classList.remove('hidden');
+  get('lockScreen').classList.add('show');
   get('app').classList.add('hidden');
   pinBuffer = ''; pinAttempts = 0;
   updatePinDots();
   get('lockError').textContent = '';
 }
 function unlockApp() {
-  get('lockScreen').classList.add('hidden');
+  get('lockScreen').classList.remove('show');
   get('app').classList.remove('hidden');
   pinBuffer = ''; pinAttempts = 0;
   updatePinDots();
 }
 function forgotPin() {
-  if(!confirm('اگر رمز را فراموش کرده‌اید، تنها راه بازنشانی برنامه و پاک کردن تمام داده‌هاست.\n\nآیا مطمئن هستید؟')) return;
-  if(!confirm('تأیید نهایی: تمام اشخاص، تراکنش‌ها و تنظیمات پاک می‌شوند و برنامه بازنشانی می‌شود. ادامه؟')) return;
+  if(!confirm('بازنشانی برنامه و پاک کردن تمام داده‌ها؟')) return;
+  if(!confirm('تأیید نهایی: همه داده‌ها پاک می‌شوند')) return;
   localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem('hesab_ketab_lastBackup');
   location.reload();
 }
-
-// PIN Setup
 function togglePinSetting() {
   if(pinHash){
     if(!confirm('قفل پین غیرفعال شود؟')) return;
@@ -936,32 +888,26 @@ function savePin() {
   closePinSetup();
   updatePinStatus();
   toast('قفل فعال شد');
-  showLockScreen();
 }
 function updatePinStatus() {
-  var st = get('pinStatus');
-  var sw = get('pinSwitch');
-  if(pinHash){ st.textContent = 'فعال (۴ رقمی)'; sw.classList.add('on'); }
-  else { st.textContent = 'غیرفعال'; sw.classList.remove('on'); }
+  var st = get('pinStatus'), sw = get('pinSwitch');
+  if(pinHash){ if(st) st.textContent = 'فعال (۴ رقمی)'; if(sw) sw.classList.add('on'); }
+  else { if(st) st.textContent = 'غیرفعال'; if(sw) sw.classList.remove('on'); }
 }
 
-// ============ BACKUP / RESTORE ============
+// ============ BACKUP ============
 function updateBackupText() {
-  var last = localStorage.getItem('hesab_ketab_lastBackup');
-  var el = get('lastBackupText');
-  if(!el) return;
-  if(last){
-    try {
-      var d = new Date(last);
-      var j = getTodayJalali();
-      el.textContent = 'آخرین پشتیبان: ' + j.jy + '/' + String(j.jm).padStart(2,'0') + '/' + String(j.jd).padStart(2,'0') + ' - ' + d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-    } catch(e){ el.textContent = 'آخرین پشتیبان ذخیره شد'; }
-  } else {
-    el.textContent = 'هنوز پشتیبان نگرفته‌اید';
-  }
+  var el = get('lastBackupText'); if(!el) return;
+  try {
+    var last = localStorage.getItem('hesab_ketab_lastBackup');
+    if(!last){ el.textContent = 'هنوز پشتیبان نگرفته‌اید'; return; }
+    var d = new Date(last);
+    var j = getTodayJalali();
+    el.textContent = 'آخرین: '+j.jy+'/'+String(j.jm).padStart(2,'0')+'/'+String(j.jd).padStart(2,'0')+' - '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+  } catch(e){ el.textContent = 'هنوز پشتیبان نگرفته‌اید'; }
 }
 function backupData() {
-  if(!window.AndroidBridge || !window.AndroidBridge.exportBackup){ toast('خطا: پل ارتباطی پیدا نشد'); return; }
+  if(!window.AndroidBridge || !window.AndroidBridge.exportBackup){ toast('خطا: پل ارتباطی'); return; }
   var data = JSON.stringify({ people:people, transactions:transactions, themeMode:themeMode, accent:accent });
   var j = getTodayJalali();
   var fname = 'hesab_ketab_'+j.jy+'-'+String(j.jm).padStart(2,'0')+'-'+String(j.jd).padStart(2,'0')+'.json';
@@ -970,25 +916,32 @@ function backupData() {
 }
 window.onExportResult = function(id, success){
   if(success){
-    localStorage.setItem('hesab_ketab_lastBackup', new Date().toISOString());
+    try { localStorage.setItem('hesab_ketab_lastBackup', new Date().toISOString()); } catch(e){}
     updateBackupText();
     toast('پشتیبان ذخیره شد');
-  } else {
-    toast('ذخیره لغو شد');
-  }
+  } else toast('ذخیره لغو شد');
 };
 function restoreData() {
-  if(!window.AndroidBridge || !window.AndroidBridge.importBackup){ toast('خطا: پل ارتباطی پیدا نشد'); return; }
+  if(!window.AndroidBridge || !window.AndroidBridge.importBackup){ toast('خطا: پل ارتباطی'); return; }
   if(!confirm('بازیابی، اطلاعات فعلی را جایگزین می‌کند. ادامه؟')) return;
   window.AndroidBridge.importBackup("1");
-  toast('در حال باز کردن فایل...');
+  toast('در حال باز کردن...');
 }
 window.onImportResult = function(id, content, error){
-  if(error || !content){ if(error!=='cancelled') toast('خطا در بازیابی'); return; }
+  if(error || !content){ if(error!=='cancelled') toast('خطا'); return; }
   try {
     var d = JSON.parse(content);
     if(d.people && d.transactions){
       people = d.people; transactions = d.transactions;
       if(d.themeMode) themeMode = d.themeMode;
       if(d.accent) accent = d.accent;
-      saveData(); applyTheme(); refreshThemeButtons()
+      saveData(); applyTheme(); refreshThemeButtons();
+      renderHome(); renderHistory(); renderPeopleList(); updatePinStatus();
+      toast('بازیابی انجام شد');
+    } else toast('فایل نامعتبر');
+  } catch(e){ toast('فایل نامعتبر'); }
+};
+function clearAllData() {
+  if(!confirm('تمام اطلاعات پاک شوند؟')) return;
+  if(!confirm('تأیید نهایی')) return;
+  people = []; transact
