@@ -5,18 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>حساب و کتاب</title>
 <style>
-:root[data-theme="light"]{--bg:#F5F5F5;--surface:#FFF;--text:#212121;--text2:#757575;--border:#E0E0E0;--input-bg:#FAFAFA;--shadow:0 2px 8px rgba(0,0,0,0.08);--green:#2E7D32;--green-bg:#E8F5E9;--red:#C62828;--red-bg:#FFEBEE;--nav-shadow:0 -2px 8px rgba(0,0,0,0.06)}
-:root[data-theme="dark"]{--bg:#121212;--surface:#1E1E1E;--text:#E0E0E0;--text2:#9E9E9E;--border:#333;--input-bg:#2A2A2A;--shadow:0 2px 8px rgba(0,0,0,0.4);--green:#66BB6A;--green-bg:#1B2E1F;--red:#EF5350;--red-bg:#2E1B1B;--nav-shadow:0 -2px 8px rgba(0,0,0,0.3)}
-:root[data-theme="light"][data-accent="teal"]  {--primary:#00897B;--primary-dark:#00695C;--primary-light:#E0F2F1}
-:root[data-theme="light"][data-accent="blue"]  {--primary:#1976D2;--primary-dark:#0D47A1;--primary-light:#E3F2FD}
-:root[data-theme="light"][data-accent="purple"]{--primary:#7B1FA2;--primary-dark:#4A148C;--primary-light:#F3E5F5}
-:root[data-theme="light"][data-accent="orange"]{--primary:#EF6C00;--primary-dark:#E65100;--primary-light:#FFF3E0}
-:root[data-theme="light"][data-accent="pink"]  {--primary:#D81B60;--primary-dark:#880E4F;--primary-light:#FCE4EC}
-:root[data-theme="dark"][data-accent="teal"]  {--primary:#26A69A;--primary-dark:#00897B;--primary-light:#00332E}
-:root[data-theme="dark"][data-accent="blue"]  {--primary:#64B5F6;--primary-dark:#1976D2;--primary-light:#0D2233}
-:root[data-theme="dark"][data-accent="purple"]{--primary:#BA68C8;--primary-dark:#7B1FA2;--primary-light:#2E1B3D}
-:root[data-theme="dark"][data-accent="orange"]{--primary:#FFB74D;--primary-dark:#EF6C00;--primary-light:#3D2210}
-:root[data-theme="dark"][data-accent="pink"]  {--primary:#F06292;--primary-dark:#D81B60;--primary-light:#3D1020}
+:root[data-theme="light"]{--bg:#F5F5F5;--surface:#FFF;--text:#212121;--text2:#757575;--border:#E0E0E0;--input-bg:#FAFAFA;--shadow:0 2px 8px rgba(0,0,0,0.08);--green:#2E7D32;--green-bg:#E8F5E9;--red:#C62828;--red-bg:#FFEBEE;--nav-shadow:0 -2px 8px rgba(0,0,0,0.06);--primary:#00897B;--primary-dark:#00695C;--primary-light:#E0F2F1}
+:root[data-theme="dark"]{--bg:#121212;--surface:#1E1E1E;--text:#E0E0E0;--text2:#9E9E9E;--border:#333;--input-bg:#2A2A2A;--shadow:0 2px 8px rgba(0,0,0,0.4);--green:#66BB6A;--green-bg:#1B2E1F;--red:#EF5350;--red-bg:#2E1B1B;--nav-shadow:0 -2px 8px rgba(0,0,0,0.3);--primary:#26A69A;--primary-dark:#00897B;--primary-light:#00332E}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent}
@@ -24,7 +14,6 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
 .screen{display:none;padding-bottom:20px}
 .screen.active{display:block}
-.hidden{display:none !important}
 .header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:20px 16px 24px;border-radius:0 0 24px 24px;box-shadow:var(--shadow)}
 .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .header h1{font-size:20px;font-weight:700}
@@ -123,15 +112,18 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 .pin-dot.filled{background:#fff;transform:scale(1.1)}
 .pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px;justify-content:center}
 .pin-pad button{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:26px;font-weight:600;font-family:inherit;cursor:pointer}
-.pin-pad .empty{visibility:hidden}
 .lock-forgot{margin-top:30px;background:none;border:none;color:rgba(255,255,255,0.7);font-family:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
-#errBanner{position:fixed;top:0;left:0;right:0;background:#c00;color:#fff;padding:8px 12px;font-family:monospace;font-size:11px;z-index:99999;direction:ltr;text-align:left;max-height:30vh;overflow:auto;white-space:pre-wrap;display:none}
 </style>
 </head>
 <body>
-<div id="errBanner"></div>
 
-<!-- LOCK SCREEN -->
+<!-- ============ JS ALIVE TEST ============ -->
+<div id="jsAlive" style="position:fixed;top:0;left:0;right:0;background:#c00;color:#fff;text-align:center;padding:10px;z-index:999999;font-family:monospace;font-size:14px;font-weight:bold;">⚠ JavaScript اجرا نشد</div>
+
+<!-- ============ ERROR BANNER ============ -->
+<div id="errBanner" style="display:none;position:fixed;top:40px;left:0;right:0;background:#c00;color:#fff;padding:8px 12px;font-family:monospace;font-size:11px;z-index:999998;direction:ltr;text-align:left;max-height:30vh;overflow:auto;white-space:pre-wrap;"></div>
+
+<!-- ============ LOCK SCREEN ============ -->
 <div class="lock-screen" id="lockScreen">
   <div class="lock-icon">🔒</div>
   <div class="lock-title">حساب و کتاب</div>
@@ -144,7 +136,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
   <button class="lock-forgot" onclick="forgotPin()">رمز را فراموش کرده‌ام؟</button>
 </div>
 
-<!-- MAIN APP (visible by default) -->
+<!-- ============ MAIN APP ============ -->
 <div class="app" id="app">
   <div class="content" id="content">
     <!-- HOME -->
@@ -244,7 +236,7 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
       <div class="settings-group">
         <h3>ℹ️ درباره</h3>
         <div class="setting-item" style="cursor:default">
-          <div class="setting-info" style="text-align:center"><div class="setting-label">حساب و کتاب</div><div class="setting-sub">نسخه ۴.۱</div></div>
+          <div class="setting-info" style="text-align:center"><div class="setting-label">حساب و کتاب</div><div class="setting-sub">نسخه ۴.۲</div></div>
         </div>
       </div>
     </div>
@@ -328,20 +320,25 @@ body{font-family:Tahoma,sans-serif;background:var(--bg);color:var(--text);overfl
 
 <div class="toast" id="toast"></div>
 
+<!-- ============ SCRIPT 1: ALIVE + ERROR HANDLER ============ -->
 <script>
-// ============ ERROR HANDLER ============
+(function(){
+  var a = document.getElementById('jsAlive');
+  if (a) {
+    a.style.background = '#2E7D32';
+    a.textContent = '✓ JavaScript اجرا شد';
+    setTimeout(function(){ a.style.display = 'none'; }, 3000);
+  }
+})();
 window.onerror = function(m, u, l, c, e) {
   var b = document.getElementById('errBanner');
   if (b) { b.style.display = 'block'; b.textContent += '⚠ ' + m + ' @' + l + '\n'; }
-  return true;
+  return false;
 };
+</script>
 
-function get(id){ return document.getElementById(id); }
-function fmt(n){ return Number(n).toLocaleString('en-US'); }
-function toast(msg){ var t = get('toast'); if(t){ t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2200); } }
-function hashPin(pin){ var h=0; for(var i=0;i<pin.length;i++){h=((h<<5)-h)+pin.charCodeAt(i);h|=0;} return 'p'+Math.abs(h).toString(16)+'_'+pin.length; }
-
-// ============ STATE ============
+<!-- ============ SCRIPT 2: MAIN CODE ============ -->
+<script>
 var people = [];
 var transactions = [];
 var currentTxType = 'debit';
@@ -355,12 +352,22 @@ var pinBuffer = '';
 var pinAttempts = 0;
 var pendingQuickAddType = null;
 var txIsQuickAdd = false;
-
 var monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 var STORAGE_KEY = 'hesab_ketab_v4';
 
-// ============ STORAGE ============
-function saveData() {
+function get(id){ return document.getElementById(id); }
+function fmt(n){ return Number(n).toLocaleString('en-US'); }
+function toast(msg){
+  var t = get('toast');
+  if(t){ t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2200); }
+}
+function hashPin(pin){
+  var h = 0;
+  for(var i=0;i<pin.length;i++){ h = ((h<<5)-h)+pin.charCodeAt(i); h |= 0; }
+  return 'p'+Math.abs(h).toString(16)+'_'+pin.length;
+}
+
+function saveData(){
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       people: people, transactions: transactions,
@@ -368,32 +375,31 @@ function saveData() {
     }));
   } catch(e){}
 }
-function loadData() {
+function loadData(){
   try {
     var raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
+    if(!raw) return;
     var d = JSON.parse(raw);
-    if (!d) return;
-    if (Array.isArray(d.people)) people = d.people;
-    if (Array.isArray(d.transactions)) transactions = d.transactions;
-    if (d.themeMode) themeMode = d.themeMode;
-    if (d.accent) accent = d.accent;
-    if (d.pinHash) pinHash = d.pinHash;
+    if(!d) return;
+    if(Array.isArray(d.people)) people = d.people;
+    if(Array.isArray(d.transactions)) transactions = d.transactions;
+    if(d.themeMode) themeMode = d.themeMode;
+    if(d.accent) accent = d.accent;
+    if(d.pinHash) pinHash = d.pinHash;
   } catch(e){ people=[]; transactions=[]; }
 }
 
-// ============ THEME ============
-function applyTheme() {
+function applyTheme(){
   var isDark = false;
-  if (themeMode === 'auto') {
+  if(themeMode === 'auto'){
     try { isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; } catch(e){}
   } else {
-    isDark = themeMode === 'dark';
+    isDark = (themeMode === 'dark');
   }
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   document.documentElement.setAttribute('data-accent', accent || 'teal');
 }
-function setThemeMode(mode, btn) {
+function setThemeMode(mode, btn){
   themeMode = mode;
   var btns = document.querySelectorAll('.theme-mode-btn');
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
@@ -401,7 +407,7 @@ function setThemeMode(mode, btn) {
   applyTheme();
   saveData();
 }
-function setAccent(color, btn) {
+function setAccent(color, btn){
   accent = color;
   var btns = document.querySelectorAll('.accent-circle');
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
@@ -410,89 +416,93 @@ function setAccent(color, btn) {
   saveData();
   toast('رنگ تغییر کرد');
 }
-function refreshThemeButtons() {
+function refreshThemeButtons(){
   var btns = document.querySelectorAll('.theme-mode-btn');
-  for(var i=0;i<btns.length;i++) {
+  for(var i=0;i<btns.length;i++){
     btns[i].classList.remove('active');
     if(btns[i].getAttribute('data-mode') === themeMode) btns[i].classList.add('active');
   }
-  var acc = document.querySelectorAll('.accent-circle');
-  for(var j=0;j<acc.length;j++) {
-    acc[j].classList.remove('active');
-    if(acc[j].getAttribute('data-accent') === accent) acc[j].classList.add('active');
+  var accs = document.querySelectorAll('.accent-circle');
+  for(var j=0;j<accs.length;j++){
+    accs[j].classList.remove('active');
+    if(accs[j].getAttribute('data-accent') === accent) accs[j].classList.add('active');
   }
 }
 try {
-  if (window.matchMedia) {
+  if(window.matchMedia){
     var mq = window.matchMedia('(prefers-color-scheme: dark)');
-    var mqHandler = function(){ if (themeMode === 'auto') applyTheme(); };
-    if (mq.addEventListener) mq.addEventListener('change', mqHandler);
-    else if (mq.addListener) mq.addListener(mqHandler);
+    var mqH = function(){ if(themeMode === 'auto') applyTheme(); };
+    if(mq.addEventListener) mq.addEventListener('change', mqH);
+    else if(mq.addListener) mq.addListener(mqH);
   }
 } catch(e){}
 
-// ============ JALALI ============
-function getTodayJalali() {
-  var now = new Date(), gy = now.getFullYear(), gm = now.getMonth() + 1, gd = now.getDate();
+function getTodayJalali(){
+  var now = new Date(), gy = now.getFullYear(), gm = now.getMonth()+1, gd = now.getDate();
   var g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
-  var jy = (gy <= 1600) ? 0 : 979; gy -= (gy <= 1600) ? 621 : 1600;
-  var gy2 = (gm > 2) ? (gy + 1) : gy;
-  var days = (365 * gy) + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
-  jy += 33 * Math.floor(days / 12053); days %= 12053;
-  jy += 4 * Math.floor(days / 1461); days %= 1461;
-  if (days > 365) { jy += Math.floor((days - 1) / 365); days = (days - 1) % 365; }
-  var jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
-  var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+  var jy = (gy <= 1600) ? 0 : 979;
+  gy -= (gy <= 1600) ? 621 : 1600;
+  var gy2 = (gm > 2) ? (gy+1) : gy;
+  var days = (365*gy) + Math.floor((gy2+3)/4) - Math.floor((gy2+99)/100) + Math.floor((gy2+399)/400) - 80 + gd + g_d_m[gm-1];
+  jy += 33 * Math.floor(days/12053); days %= 12053;
+  jy += 4 * Math.floor(days/1461); days %= 1461;
+  if(days > 365){ jy += Math.floor((days-1)/365); days = (days-1)%365; }
+  var jm = (days < 186) ? 1 + Math.floor(days/31) : 7 + Math.floor((days-186)/30);
+  var jd = 1 + ((days < 186) ? (days%31) : ((days-186)%30));
   return { jy: jy, jm: jm, jd: jd };
 }
-function getMonthLength(jy, jm) {
-  if (jm <= 6) return 31; if (jm <= 11) return 30;
-  return [1,5,9,13,17,22,26,30].indexOf(jy % 33) >= 0 ? 30 : 29;
+function getMonthLength(jy, jm){
+  if(jm <= 6) return 31;
+  if(jm <= 11) return 30;
+  return [1,5,9,13,17,22,26,30].indexOf(jy%33) >= 0 ? 30 : 29;
 }
-function fillDateSelectors(yId, mId, dId, defJ) {
+function fillDateSelectors(yId, mId, dId, defJ){
   var t = getTodayJalali();
-  var jy = defJ ? defJ.jy : t.jy, jm = defJ ? defJ.jm : t.jm, jd = defJ ? defJ.jd : t.jd;
+  var jy = defJ ? defJ.jy : t.jy;
+  var jm = defJ ? defJ.jm : t.jm;
+  var jd = defJ ? defJ.jd : t.jd;
   var selY = get(yId), selM = get(mId), selD = get(dId);
   if(!selY||!selM||!selD) return;
-  var htmlY=''; for(var i=1400;i<=1420;i++) htmlY += '<option value="'+i+'"'+(i===jy?' selected':'')+'>'+i+'</option>';
-  selY.innerHTML = htmlY;
-  var htmlM=''; for(var j=1;j<=12;j++) htmlM += '<option value="'+j+'"'+(j===jm?' selected':'')+'>'+monthNames[j-1]+'</option>';
-  selM.innerHTML = htmlM;
+  var hy=''; for(var i=1400;i<=1420;i++) hy += '<option value="'+i+'"'+(i===jy?' selected':'')+'>'+i+'</option>';
+  selY.innerHTML = hy;
+  var hm=''; for(var j=1;j<=12;j++) hm += '<option value="'+j+'"'+(j===jm?' selected':'')+'>'+monthNames[j-1]+'</option>';
+  selM.innerHTML = hm;
   updateDayOptions(yId,mId,dId,jd);
   selY.onchange = function(){ updateDayOptions(yId,mId,dId); };
   selM.onchange = function(){ updateDayOptions(yId,mId,dId); };
 }
-function updateDayOptions(yId,mId,dId,selectDay) {
+function updateDayOptions(yId,mId,dId,selDay){
   var y=+get(yId).value, m=+get(mId).value, selD=get(dId);
   if(!y||!m) return;
   var len = getMonthLength(y,m);
-  var prev = selectDay || +selD.value || 1; if(prev>len) prev=len;
-  var html=''; for(var d=1;d<=len;d++) html += '<option value="'+d+'"'+(d===prev?' selected':'')+'>'+d+'</option>';
-  selD.innerHTML = html;
+  var prev = selDay || +selD.value || 1;
+  if(prev>len) prev = len;
+  var h=''; for(var d=1;d<=len;d++) h += '<option value="'+d+'"'+(d===prev?' selected':'')+'>'+d+'</option>';
+  selD.innerHTML = h;
 }
 
-// ============ CORE ============
-function getPersonBalance(pid) {
+function getPersonBalance(pid){
   var bal = 0;
-  for (var i=0;i<transactions.length;i++) {
-    if (transactions[i].personId === pid) {
-      if (transactions[i].type === 'debit') bal += transactions[i].amount;
+  for(var i=0;i<transactions.length;i++){
+    if(transactions[i].personId === pid){
+      if(transactions[i].type === 'debit') bal += transactions[i].amount;
       else bal -= transactions[i].amount;
     }
   }
   return bal;
 }
-function colorForName(name) {
+function colorForName(name){
   var colors = ['#5C6BC0','#26A69A','#EF5350','#FFA726','#AB47BC','#42A5F5','#66BB6A','#EC407A'];
-  var sum=0; for(var i=0;i<name.length;i++) sum += name.charCodeAt(i);
+  var sum = 0;
+  for(var i=0;i<name.length;i++) sum += name.charCodeAt(i);
   return colors[sum % colors.length];
 }
 
-// ============ NAV ============
-function switchTab(screenId, btn) {
+function switchTab(screenId, btn){
   var screens = document.querySelectorAll('.screen');
   for(var i=0;i<screens.length;i++) screens[i].classList.remove('active');
-  var target = get(screenId); if(target) target.classList.add('active');
+  var target = get(screenId);
+  if(target) target.classList.add('active');
   var btns = document.querySelectorAll('.bottom-nav button');
   for(var j=0;j<btns.length;j++) btns[j].classList.remove('active');
   if(btn) btn.classList.add('active');
@@ -502,32 +512,30 @@ function switchTab(screenId, btn) {
   if(screenId==='reportsScreen') setReportType(currentReportType, document.querySelector('.report-btn.active'));
 }
 
-// ============ HOME ============
-function renderHome() {
+function renderHome(){
   var td=0, tc=0;
-  for(var i=0;i<transactions.length;i++) {
+  for(var i=0;i<transactions.length;i++){
     if(transactions[i].type==='debit') td += transactions[i].amount;
     else tc += transactions[i].amount;
   }
   var dEl = get('homeTotalDebit'); if(dEl) dEl.textContent = fmt(td);
   var cEl = get('homeTotalCredit'); if(cEl) cEl.textContent = fmt(tc);
   var bal = td - tc, balEl = get('homeBalance');
-  if(balEl) {
+  if(balEl){
     balEl.textContent = fmt(Math.abs(bal));
     if(bal>0){ balEl.style.color='var(--green)'; balEl.textContent = fmt(bal)+' طلب'; }
     else if(bal<0){ balEl.style.color='var(--red)'; balEl.textContent = fmt(-bal)+' بدهی'; }
     else { balEl.style.color='var(--text2)'; balEl.textContent='تسویه'; }
   }
-
   var pwt = people.map(function(p){
-    var lastTx = transactions.filter(function(t){ return t.personId===p.id; }).pop();
-    return { person:p, lastTxTime: lastTx?lastTx.id:0, lastDate: lastTx?lastTx.date:'---' };
+    var lastTx = transactions.filter(function(t){ return t.personId === p.id; }).pop();
+    return { person: p, lastTxTime: lastTx ? lastTx.id : 0, lastDate: lastTx ? lastTx.date : '---' };
   });
   pwt.sort(function(a,b){ return b.lastTxTime - a.lastTxTime; });
-
-  var el = get('homeList'); if(!el) return;
-  if(pwt.length===0){ el.innerHTML='<div class="empty">هنوز شخصی ثبت نشده است</div>'; return; }
-  var html='';
+  var el = get('homeList');
+  if(!el) return;
+  if(pwt.length === 0){ el.innerHTML = '<div class="empty">هنوز شخصی ثبت نشده است</div>'; return; }
+  var html = '';
   for(var k=0;k<pwt.length;k++){
     var p = pwt[k].person;
     var pBal = getPersonBalance(p.id);
@@ -541,47 +549,49 @@ function renderHome() {
   el.innerHTML = html;
 }
 
-// ============ HISTORY ============
-function renderHistory() {
+function renderHistory(){
   var sh = get('historySearch');
   var q = sh ? sh.value.trim().toLowerCase() : '';
   var list = transactions.slice().sort(function(a,b){ return b.id - a.id; });
   if(q){
     list = list.filter(function(t){
-      var pName = (people.find(function(p){return p.id===t.personId;})||{}).name||'';
+      var pName = '';
+      for(var i=0;i<people.length;i++){ if(people[i].id === t.personId){ pName = people[i].name; break; } }
       return pName.toLowerCase().indexOf(q)>=0 || (t.note||'').toLowerCase().indexOf(q)>=0 ||
              (t.category||'').toLowerCase().indexOf(q)>=0 || String(t.amount).indexOf(q)>=0;
     });
   }
-  var el = get('historyList'); if(!el) return;
-  if(list.length===0){ el.innerHTML='<div class="empty">تراکنشی یافت نشد</div>'; return; }
-  var html='';
+  var el = get('historyList');
+  if(!el) return;
+  if(list.length === 0){ el.innerHTML = '<div class="empty">تراکنشی یافت نشد</div>'; return; }
+  var html = '';
   for(var i=0;i<list.length;i++){
-    var t=list[i];
-    var person = people.find(function(p){return p.id===t.personId;})||{name:'ناشناس'};
+    var t = list[i];
+    var pName = 'ناشناس';
+    for(var j=0;j<people.length;j++){ if(people[j].id === t.personId){ pName = people[j].name; break; } }
     var sign = t.type==='debit'?'↓':'↑';
     var bg = t.type==='debit'?'var(--green)':'var(--red)';
     var cat = t.category?'<span class="badge">'+t.category+'</span>':'';
     var note = t.note?' • '+t.note:'';
     html += '<div class="card" onclick="openPersonDetail('+t.personId+')">'+
       '<div class="avatar" style="background:'+bg+'">'+sign+'</div>'+
-      '<div class="card-body"><div class="card-name">'+person.name+' '+cat+'</div>'+
+      '<div class="card-body"><div class="card-name">'+pName+' '+cat+'</div>'+
       '<div class="card-sub">'+t.date+' - '+(t.time||'')+note+'</div></div>'+
       '<div class="card-amount '+t.type+'">'+fmt(t.amount)+'</div></div>';
   }
   el.innerHTML = html;
 }
 
-// ============ PEOPLE ============
-function renderPeopleList() {
+function renderPeopleList(){
   var ps = get('peopleSearch');
   var q = ps ? ps.value.trim().toLowerCase() : '';
-  var el = get('peopleList'); if(!el) return;
-  var filtered = people.filter(function(p){ return p.name.toLowerCase().indexOf(q)>=0; });
-  if(filtered.length===0){ el.innerHTML='<div class="empty">شخصی یافت نشد</div>'; return; }
-  var html='';
+  var el = get('peopleList');
+  if(!el) return;
+  var filtered = people.filter(function(p){ return p.name.toLowerCase().indexOf(q) >= 0; });
+  if(filtered.length === 0){ el.innerHTML = '<div class="empty">شخصی یافت نشد</div>'; return; }
+  var html = '';
   for(var i=0;i<filtered.length;i++){
-    var p=filtered[i], bal=getPersonBalance(p.id);
+    var p = filtered[i], bal = getPersonBalance(p.id);
     var color = bal>0?'var(--green)':(bal<0?'var(--red)':'var(--text2)');
     var txt = bal>0?fmt(bal):(bal<0?fmt(-bal):'0');
     html += '<div class="card" onclick="openPersonDetail('+p.id+')">'+
@@ -594,10 +604,10 @@ function renderPeopleList() {
   el.innerHTML = html;
 }
 
-// ============ PERSON DETAIL ============
-function openPersonDetail(pid) {
+function openPersonDetail(pid){
   currentSelectedPersonId = pid;
-  var p = people.find(function(x){return x.id===pid;});
+  var p = null;
+  for(var i=0;i<people.length;i++){ if(people[i].id === pid){ p = people[i]; break; } }
   if(!p) return;
   var nameEl = get('detailPersonName'); if(nameEl) nameEl.textContent = p.name;
   var bal = getPersonBalance(pid), el = get('detailPersonBalance');
@@ -609,15 +619,17 @@ function openPersonDetail(pid) {
   renderPersonTx();
   var ds = get('personDetailScreen'); if(ds) ds.classList.add('show');
 }
-function closePersonDetail(){ var ds = get('personDetailScreen'); if(ds) ds.classList.remove('show'); currentSelectedPersonId=null; }
-
-function renderPersonTx() {
+function closePersonDetail(){
+  var ds = get('personDetailScreen'); if(ds) ds.classList.remove('show');
+  currentSelectedPersonId = null;
+}
+function renderPersonTx(){
   var list = get('personTransactionsList'); if(!list) return;
-  var tx = transactions.filter(function(t){return t.personId===currentSelectedPersonId;}).sort(function(a,b){return b.id-a.id;});
-  if(tx.length===0){ list.innerHTML='<div class="empty">تراکنشی ثبت نشده است</div>'; return; }
-  var html='';
+  var tx = transactions.filter(function(t){ return t.personId === currentSelectedPersonId; }).sort(function(a,b){ return b.id - a.id; });
+  if(tx.length === 0){ list.innerHTML = '<div class="empty">تراکنشی ثبت نشده است</div>'; return; }
+  var html = '';
   for(var i=0;i<tx.length;i++){
-    var t=tx[i];
+    var t = tx[i];
     var sign = t.type==='debit'?'↓':'↑';
     var bg = t.type==='debit'?'var(--green)':'var(--red)';
     var title = t.type==='debit'?'بدهکار':'بستانکار';
@@ -632,24 +644,24 @@ function renderPersonTx() {
   }
   list.innerHTML = html;
 }
-function deleteTransaction(id) {
+function deleteTransaction(id){
   if(!confirm('این تراکنش حذف شود؟')) return;
-  transactions = transactions.filter(function(t){return t.id!==id;});
+  transactions = transactions.filter(function(t){ return t.id !== id; });
   saveData();
   openPersonDetail(currentSelectedPersonId);
   renderHome(); renderHistory(); renderPeopleList();
   toast('تراکنش حذف شد');
 }
 
-// ============ PERSON CRUD ============
-function openAddPersonModal() {
+function openAddPersonModal(){
   editingPersonId = null;
   get('personModalTitle').textContent = 'افزودن شخص جدید';
   get('personNameInput').value = '';
   get('personModal').classList.add('show');
 }
-function openEditPersonModal(id) {
-  var p = people.find(function(x){return x.id===id;});
+function openEditPersonModal(id){
+  var p = null;
+  for(var i=0;i<people.length;i++){ if(people[i].id === id){ p = people[i]; break; } }
   if(!p) return;
   editingPersonId = id;
   get('personModalTitle').textContent = 'ویرایش شخص';
@@ -657,42 +669,46 @@ function openEditPersonModal(id) {
   get('personModal').classList.add('show');
 }
 function closePersonModal(){ get('personModal').classList.remove('show'); }
-function savePerson() {
+
+function savePerson(){
   var name = get('personNameInput').value.trim();
   if(!name){ toast('نام را وارد کنید'); return; }
   if(editingPersonId){
-    var p = people.find(function(x){return x.id===editingPersonId;});
-    if(p) p.name = name;
+    for(var i=0;i<people.length;i++){ if(people[i].id === editingPersonId) people[i].name = name; }
     saveData(); closePersonModal(); renderPeopleList(); renderHome();
     toast('ویرایش شد');
   } else {
-    if(people.find(function(p){return p.name===name;})){ toast('این شخص قبلاً ثبت شده'); return; }
-    var np = {id:Date.now(), name:name};
+    var exists = false;
+    for(var j=0;j<people.length;j++){ if(people[j].name === name){ exists = true; break; } }
+    if(exists){ toast('این شخص قبلاً ثبت شده'); return; }
+    var np = { id: Date.now(), name: name };
     people.push(np);
     saveData(); closePersonModal(); renderPeopleList(); renderHome();
     toast('شخص جدید ثبت شد');
     if(pendingQuickAddType){
-      var type = pendingQuickAddType; pendingQuickAddType = null;
+      var type = pendingQuickAddType;
+      pendingQuickAddType = null;
       setTimeout(function(){
         openQuickAdd(type);
-        setTimeout(function(){ var s=get('txPersonSelect'); if(s) s.value=np.id; }, 50);
+        setTimeout(function(){ var s = get('txPersonSelect'); if(s) s.value = np.id; }, 50);
       }, 150);
     }
   }
 }
-function deletePerson(id) {
-  var p = people.find(function(x){return x.id===id;});
+
+function deletePerson(id){
+  var p = null;
+  for(var i=0;i<people.length;i++){ if(people[i].id === id){ p = people[i]; break; } }
   if(!p) return;
   if(!confirm('حذف "'+p.name+'" و تمام تراکنش‌هایش؟')) return;
-  people = people.filter(function(x){return x.id!==id;});
-  transactions = transactions.filter(function(x){return x.personId!==id;});
+  people = people.filter(function(x){ return x.id !== id; });
+  transactions = transactions.filter(function(x){ return x.personId !== id; });
   saveData(); renderPeopleList(); renderHome(); renderHistory();
   toast('حذف شد');
 }
 
-// ============ TRANSACTION ============
-function openQuickAdd(type) {
-  if(people.length===0){
+function openQuickAdd(type){
+  if(people.length === 0){
     pendingQuickAddType = type;
     editingPersonId = null;
     get('personModalTitle').textContent = 'افزودن شخص جدید';
@@ -712,7 +728,7 @@ function openQuickAdd(type) {
   fillDateSelectors('txYear','txMonth','txDay', null);
   get('transactionModal').classList.add('show');
 }
-function onPersonSelectChange(sel) {
+function onPersonSelectChange(sel){
   if(sel.value === '__new__'){
     pendingQuickAddType = currentTxType;
     closeTransactionModal();
@@ -722,28 +738,29 @@ function onPersonSelectChange(sel) {
     get('personModal').classList.add('show');
   }
 }
-function openAddTransactionModal() {
+function openAddTransactionModal(){
   txIsQuickAdd = false;
   get('txPersonSelectContainer').style.display = 'none';
-  var p = people.find(function(x){return x.id===currentSelectedPersonId;});
-  get('txModalTitle').textContent = 'تراکنش برای: ' + (p?p.name:'');
+  var p = null;
+  for(var i=0;i<people.length;i++){ if(people[i].id === currentSelectedPersonId){ p = people[i]; break; } }
+  get('txModalTitle').textContent = 'تراکنش برای: ' + (p ? p.name : '');
   get('txAmount').value = ''; get('txNote').value = '';
   setTxType('debit', document.querySelector('.type-toggle button[data-type="debit"]'));
   fillDateSelectors('txYear','txMonth','txDay', null);
   get('transactionModal').classList.add('show');
 }
 function closeTransactionModal(){ get('transactionModal').classList.remove('show'); }
-function setTxType(t, btn) {
+function setTxType(t, btn){
   currentTxType = t;
   var btns = document.querySelectorAll('#txTypeToggle button');
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
   if(btn) btn.classList.add('active');
 }
-function saveTransaction() {
+function saveTransaction(){
   var amt = parseFloat(get('txAmount').value.replace(/,/g,''));
   if(!amt || amt<=0){ toast('مبلغ معتبر وارد کنید'); return; }
   var pid = txIsQuickAdd ? +get('txPersonSelect').value : currentSelectedPersonId;
-  if(!pid || pid === 0 || pid === '__new__'){ toast('شخص را انتخاب کنید'); return; }
+  if(!pid || pid === 0){ toast('شخص را انتخاب کنید'); return; }
   var now = new Date();
   var timeStr = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   transactions.push({
@@ -758,48 +775,49 @@ function saveTransaction() {
   toast('تراکنش ثبت شد');
 }
 
-// ============ REPORTS ============
-function setReportType(type, btn) {
+function setReportType(type, btn){
   currentReportType = type;
   var btns = document.querySelectorAll('.report-btn');
   for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
   if(btn) btn.classList.add('active');
-  if(type==='custom'){
+  if(type === 'custom'){
     get('customDateContainer').style.display = 'block';
     var t = getTodayJalali();
-    fillDateSelectors('repStartY','repStartM','repStartD', {jy:t.jy, jm:t.jm, jd:1});
+    fillDateSelectors('repStartY','repStartM','repStartD', { jy: t.jy, jm: t.jm, jd: 1 });
     fillDateSelectors('repEndY','repEndM','repEndD', null);
     get('reportResult').innerHTML = '<div class="empty">تاریخ را انتخاب و دکمه نمایش را بزنید.</div>';
     return;
   }
   get('customDateContainer').style.display = 'none';
-  var t = getTodayJalali();
-  var today = t.jy+'/'+String(t.jm).padStart(2,'0')+'/'+String(t.jd).padStart(2,'0');
+  var t2 = getTodayJalali();
+  var todayStr = t2.jy+'/'+String(t2.jm).padStart(2,'0')+'/'+String(t2.jd).padStart(2,'0');
   var filtered = [];
   for(var i=0;i<transactions.length;i++){
     var tx = transactions[i];
-    if(type==='daily' && tx.date===today) filtered.push(tx);
-    else if(type==='monthly' && tx.date.split('/')[1]===String(t.jm).padStart(2,'0') && tx.date.split('/')[0]===String(t.jy)) filtered.push(tx);
-    else if(type==='yearly' && tx.date.split('/')[0]===String(t.jy)) filtered.push(tx);
+    var parts = tx.date.split('/');
+    if(type==='daily' && tx.date === todayStr) filtered.push(tx);
+    else if(type==='monthly' && parts[1]===String(t2.jm).padStart(2,'0') && parts[0]===String(t2.jy)) filtered.push(tx);
+    else if(type==='yearly' && parts[0]===String(t2.jy)) filtered.push(tx);
   }
   displayReportResult(filtered, type);
 }
-function calculateCustomReport() {
+function calculateCustomReport(){
   var s = get('repStartY').value+'/'+String(get('repStartM').value).padStart(2,'0')+'/'+String(get('repStartD').value).padStart(2,'0');
   var e = get('repEndY').value+'/'+String(get('repEndM').value).padStart(2,'0')+'/'+String(get('repEndD').value).padStart(2,'0');
-  var filtered = transactions.filter(function(tx){ return tx.date>=s && tx.date<=e; });
+  var filtered = transactions.filter(function(tx){ return tx.date >= s && tx.date <= e; });
   displayReportResult(filtered, 'بازه '+s+' تا '+e);
 }
-function displayReportResult(list, title) {
+function displayReportResult(list, title){
   var td=0, tc=0;
   for(var i=0;i<list.length;i++){
-    if(list[i].type==='debit') td += list[i].amount; else tc += list[i].amount;
+    if(list[i].type === 'debit') td += list[i].amount;
+    else tc += list[i].amount;
   }
-  var bal = td-tc;
+  var bal = td - tc;
   var t = title;
-  if(title==='daily') t='گزارش امروز';
-  else if(title==='monthly') t='گزارش این ماه';
-  else if(title==='yearly') t='گزارش این سال';
+  if(title === 'daily') t = 'گزارش امروز';
+  else if(title === 'monthly') t = 'گزارش این ماه';
+  else if(title === 'yearly') t = 'گزارش این سال';
   get('reportResult').innerHTML = '<h3>'+t+'</h3>'+
     '<div class="report-stat"><span>تعداد تراکنش:</span><span>'+list.length+' مورد</span></div>'+
     '<div class="report-stat"><span>مجموع طلب:</span><span style="color:var(--green);font-weight:700;">'+fmt(td)+'</span></div>'+
@@ -807,28 +825,26 @@ function displayReportResult(list, title) {
     '<div class="report-stat" style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px;"><span>تفاضل:</span><span style="color:'+(bal>=0?'var(--green)':'var(--red)')+';font-weight:700;">'+fmt(Math.abs(bal))+'</span></div>';
 }
 
-// ============ PIN / LOCK ============
-function initLockPad() {
+function initLockPad(){
   var pad = get('lockPinPad'); if(!pad) return;
   var digits = ['1','2','3','4','5','6','7','8','9','','0','⌫'];
   var html = '';
   for(var i=0;i<digits.length;i++){
-    if(digits[i]==='') html += '<button class="empty"></button>';
+    if(digits[i] === '') html += '<button style="visibility:hidden"></button>';
     else html += '<button onclick="pinPadPress(\''+digits[i]+'\')">'+digits[i]+'</button>';
   }
   pad.innerHTML = html;
 }
-function pinPadPress(k) {
-  if(k==='⌫'){ pinBuffer = pinBuffer.slice(0,-1); updatePinDots(); return; }
-  if(pinBuffer.length>=4) return;
+function pinPadPress(k){
+  if(k === '⌫'){ pinBuffer = pinBuffer.slice(0,-1); updatePinDots(); return; }
+  if(pinBuffer.length >= 4) return;
   pinBuffer += k;
   updatePinDots();
   get('lockError').textContent = '';
-  if(pinBuffer.length===4){
+  if(pinBuffer.length === 4){
     setTimeout(function(){
-      if(hashPin(pinBuffer) === pinHash){
-        unlockApp();
-      } else {
+      if(hashPin(pinBuffer) === pinHash){ unlockApp(); }
+      else {
         pinAttempts++;
         pinBuffer = '';
         updatePinDots();
@@ -837,39 +853,40 @@ function pinPadPress(k) {
     }, 100);
   }
 }
-function updatePinDots() {
+function updatePinDots(){
   var pd = get('pinDots'); if(!pd) return;
   var dots = pd.children;
   for(var i=0;i<dots.length;i++){
-    if(i<pinBuffer.length) dots[i].classList.add('filled');
+    if(i < pinBuffer.length) dots[i].classList.add('filled');
     else dots[i].classList.remove('filled');
   }
 }
-function showLockScreen() {
+function showLockScreen(){
   get('lockScreen').classList.add('show');
   get('app').classList.add('hidden');
+  get('app').style.display = 'none';
   pinBuffer = ''; pinAttempts = 0;
   updatePinDots();
   get('lockError').textContent = '';
 }
-function unlockApp() {
+function unlockApp(){
   get('lockScreen').classList.remove('show');
   get('app').classList.remove('hidden');
+  get('app').style.display = 'flex';
   pinBuffer = ''; pinAttempts = 0;
   updatePinDots();
 }
-function forgotPin() {
+function forgotPin(){
   if(!confirm('بازنشانی برنامه و پاک کردن تمام داده‌ها؟')) return;
   if(!confirm('تأیید نهایی: همه داده‌ها پاک می‌شوند')) return;
   localStorage.removeItem(STORAGE_KEY);
   location.reload();
 }
-function togglePinSetting() {
+function togglePinSetting(){
   if(pinHash){
     if(!confirm('قفل پین غیرفعال شود؟')) return;
     pinHash = null;
-    saveData();
-    updatePinStatus();
+    saveData(); updatePinStatus();
     toast('قفل غیرفعال شد');
   } else {
     get('pinNewInput').value = '';
@@ -878,25 +895,27 @@ function togglePinSetting() {
   }
 }
 function closePinSetup(){ get('pinSetupModal').classList.remove('show'); }
-function savePin() {
+function savePin(){
   var n = get('pinNewInput').value.trim();
   var c = get('pinConfirmInput').value.trim();
-  if(n.length!==4 || !/^\d{4}$/.test(n)){ toast('پین باید ۴ رقم باشد'); return; }
-  if(n!==c){ toast('پین‌ها یکسان نیستند'); return; }
+  if(n.length !== 4 || !/^\d{4}$/.test(n)){ toast('پین باید ۴ رقم باشد'); return; }
+  if(n !== c){ toast('پین‌ها یکسان نیستند'); return; }
   pinHash = hashPin(n);
-  saveData();
-  closePinSetup();
-  updatePinStatus();
+  saveData(); closePinSetup(); updatePinStatus();
   toast('قفل فعال شد');
 }
-function updatePinStatus() {
+function updatePinStatus(){
   var st = get('pinStatus'), sw = get('pinSwitch');
-  if(pinHash){ if(st) st.textContent = 'فعال (۴ رقمی)'; if(sw) sw.classList.add('on'); }
-  else { if(st) st.textContent = 'غیرفعال'; if(sw) sw.classList.remove('on'); }
+  if(pinHash){
+    if(st) st.textContent = 'فعال (۴ رقمی)';
+    if(sw) sw.classList.add('on');
+  } else {
+    if(st) st.textContent = 'غیرفعال';
+    if(sw) sw.classList.remove('on');
+  }
 }
 
-// ============ BACKUP ============
-function updateBackupText() {
+function updateBackupText(){
   var el = get('lastBackupText'); if(!el) return;
   try {
     var last = localStorage.getItem('hesab_ketab_lastBackup');
@@ -906,9 +925,9 @@ function updateBackupText() {
     el.textContent = 'آخرین: '+j.jy+'/'+String(j.jm).padStart(2,'0')+'/'+String(j.jd).padStart(2,'0')+' - '+d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
   } catch(e){ el.textContent = 'هنوز پشتیبان نگرفته‌اید'; }
 }
-function backupData() {
+function backupData(){
   if(!window.AndroidBridge || !window.AndroidBridge.exportBackup){ toast('خطا: پل ارتباطی'); return; }
-  var data = JSON.stringify({ people:people, transactions:transactions, themeMode:themeMode, accent:accent });
+  var data = JSON.stringify({ people: people, transactions: transactions, themeMode: themeMode, accent: accent });
   var j = getTodayJalali();
   var fname = 'hesab_ketab_'+j.jy+'-'+String(j.jm).padStart(2,'0')+'-'+String(j.jd).padStart(2,'0')+'.json';
   window.AndroidBridge.exportBackup("1", fname, data);
@@ -919,16 +938,16 @@ window.onExportResult = function(id, success){
     try { localStorage.setItem('hesab_ketab_lastBackup', new Date().toISOString()); } catch(e){}
     updateBackupText();
     toast('پشتیبان ذخیره شد');
-  } else toast('ذخیره لغو شد');
+  } else { toast('ذخیره لغو شد'); }
 };
-function restoreData() {
+function restoreData(){
   if(!window.AndroidBridge || !window.AndroidBridge.importBackup){ toast('خطا: پل ارتباطی'); return; }
-  if(!confirm('بازیابی، اطلاعات فعلی را جایگزین می‌کند. ادامه؟')) return;
+  if(!confirm('بازیابی اطلاعات فعلی را جایگزین می‌کند. ادامه؟')) return;
   window.AndroidBridge.importBackup("1");
   toast('در حال باز کردن...');
 }
 window.onImportResult = function(id, content, error){
-  if(error || !content){ if(error!=='cancelled') toast('خطا'); return; }
+  if(error || !content){ if(error !== 'cancelled') toast('خطا در بازیابی'); return; }
   try {
     var d = JSON.parse(content);
     if(d.people && d.transactions){
@@ -938,10 +957,30 @@ window.onImportResult = function(id, content, error){
       saveData(); applyTheme(); refreshThemeButtons();
       renderHome(); renderHistory(); renderPeopleList(); updatePinStatus();
       toast('بازیابی انجام شد');
-    } else toast('فایل نامعتبر');
+    } else { toast('فایل نامعتبر'); }
   } catch(e){ toast('فایل نامعتبر'); }
 };
-function clearAllData() {
+function clearAllData(){
   if(!confirm('تمام اطلاعات پاک شوند؟')) return;
   if(!confirm('تأیید نهایی')) return;
-  people = []; transact
+  people = []; transactions = [];
+  saveData();
+  renderHome(); renderHistory(); renderPeopleList();
+  toast('همه پاک شد');
+}
+
+function initApp(){
+  loadData();
+  applyTheme();
+  refreshThemeButtons();
+  initLockPad();
+  updatePinStatus();
+  updateBackupText();
+  renderHome();
+  renderPeopleList();
+  renderHistory();
+  var taEl = get('txAmount');
+  if(taEl){
+    taEl.addEventListener('input', function(e){
+      var raw = e.target.value.replace(/[^\d]/g, '');
+      e.target.value = raw === '' 
